@@ -4,6 +4,107 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorSurf"
+    android:theme="@style/AppTheme"
+    tools:ignore="ExtraText">
+    android:theme="@style/Theme.AppCompat.NoActionBar"
     tools:context=".LoginActivity">
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/line_3"
+        app:layout_constraintGuide_begin="80dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+
+        app:layout_constraintTop_toTopOf="@id/line_3">
+
+        <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+            android:id="@+id/text_field_boxes"
+            style="@style/floating_la"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            app:labelText="Логин">
+
+            <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+                android:id="@+id/extended_edit_text"
+                style="@style/input_text"
+                android:inputType="phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+
+        <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+            android:id="@+id/text_field_boxes2"
+            style="@style/floating_la"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            app:labelText="Пароль"
+            app:layout_constraintTop_toBottomOf="@id/text_field_boxes">
+
+            <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+                android:id="@+id/extended_edit_text2"
+                style="@style/input_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+
+    </LinearLayout>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomLine"
+        app:layout_constraintGuide_end="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/Loginbtn"
+        app:layout_constraintBottom_toBottomOf="@id/bottomLine"
+        app:layout_constraintLeft_toLeftOf="@id/leftLine"
+        app:layout_constraintRight_toRightOf="@id/rightLine"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:textSize="14sp"
+        android:background="#1EF0D7"
+        android:layout_width="0dp"
+        android:text="@string/loginbtn"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
