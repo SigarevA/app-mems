@@ -58,13 +58,19 @@ class LoginActivity : AppCompatActivity() {
                 findViewById<TextFieldBoxes>(R.id.text_field_boxes).setError("Поле не может быть пустым!", true)
 
 
-            val btn = it
             loginVM.autheraziton(loginEditText.text.toString(),passwordEditText.text.toString() )
                 .observe(this, Observer {
-                    when {
-                        it.isFailure -> showError(btn)
-                        it.isSuccess -> showMovies(it.getOrNull())
-                    }
+                    it.subscribe(
+                        {
+                            Log.d(TAG, "Succesful next")
+                            this@LoginActivity.showAuthorization(it)
+                        },
+                        {
+                            this@LoginActivity.showError(
+                                this@LoginActivity.findViewById(R.id.login_container)
+                            )
+                        }
+                    )
                 } )
         }
     }
@@ -80,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     @SuppressLint("CommitPrefEdits")
-    private fun showMovies(responseResult: ResponseAuthorization? ) {
+    private fun showAuthorization(responseResult: ResponseAuthorization? ) {
         val mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
 
         val editor = mSettings.edit()

@@ -1,6 +1,8 @@
 package ru.samsung.itshool.memandos.model.repo
 
 import androidx.lifecycle.MutableLiveData
+import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
+import io.reactivex.rxjava3.core.Observable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -12,43 +14,24 @@ import ru.samsung.itshool.memandos.model.response.ResponseLogin
 import ru.samsung.itshool.memandos.model.api.AndroidSchoolAPI
 import ru.samsung.itshool.memandos.model.response.ResponseAuthorization
 
-typealias ResponseResult = Result<ResponseAuthorization>
+
 
 class SurfMemesRepo {
 
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
+        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
     private val androidSchoolAPI = retrofit.create(AndroidSchoolAPI::class.java)
 
 
-    fun authorize ( requestLogin: RequestLogin) : MutableLiveData<ResponseResult>{
+    fun authorize ( requestLogin: RequestLogin) : Observable<ResponseAuthorization> {
 
-        val resp = MutableLiveData<ResponseResult>()
-
-        androidSchoolAPI
-            .authorizate(requestLogin )
-            .enqueue(
-                object : Callback<ResponseLogin> {
-                    override fun onResponse(
-                        call: Call<ResponseLogin>,
-                        response: Response<ResponseLogin>
-                    ) {
-                        val body = response.body()
-                        body?.let {
-                            resp.value = Result.success(body.convert())
-                        }
-                    }
-
-                    override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
-                        resp.value = Result.failure(t)
-                    }
-                }
-            )
-        return resp
+        return androidSchoolAPI
+                    .authorizate(requestLogin)
     }
 
 
