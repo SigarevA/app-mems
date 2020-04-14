@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/dashboard"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_tab4_active"
+
+        android:title="TODO" />
+
+    <item
+        android:id="@+id/item_adding_mem"
+        app:showAsAction="always"
+        android:title="TODO"
+        android:icon="@drawable/ic_center_icon" />
+    <item
+        android:id="@+id/item_profile"
+        app:showAsAction="always"
+        android:title="TODO"
+        android:icon="@drawable/ic_user_icon" />
+
+</menu>
