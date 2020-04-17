@@ -2,8 +2,6 @@ package ru.samsung.itshool.memandos.model.response
 
 
 
-data class RequestLogin(
+data class AuthRequest(
     val login : String,
     val password : String)
-{
-}

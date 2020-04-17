@@ -16,14 +16,15 @@ import androidx.lifecycle.Observer
 import studio.carbonylgroup.textfieldboxes.TextFieldBoxes
 import com.google.android.material.snackbar.Snackbar
 import ru.samsung.itshool.memandos.*
-import ru.samsung.itshool.memandos.model.response.ResponseAuthorization
+import ru.samsung.itshool.memandos.domain.AuthData
+import ru.samsung.itshool.memandos.model.response.AuthResponse
 import ru.samsung.itshool.memandos.ui.VM.LoginVM
 
 val QUANTITY : Int = 5
 
 class LoginActivity : AppCompatActivity() {
 
-    private val TAG : String = LoginActivity::class.java.name;
+    private val TAG : String = LoginActivity::class.java.name
 
     private lateinit var loginVM: LoginVM
 
@@ -33,6 +34,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         getSupportActionBar()?.hide()
         loginVM = LoginVM()
+
+        Log.d(TAG, "Create activity Login")
 
         init()
     }
@@ -57,15 +60,24 @@ class LoginActivity : AppCompatActivity() {
             if (loginEditText.text.toString().trim().equals(""))
                 findViewById<TextFieldBoxes>(R.id.text_field_boxes).setError("Поле не может быть пустым!", true)
 
+            Log.d(TAG, "Listener button")
 
-            val btn = it
             loginVM.autheraziton(loginEditText.text.toString(),passwordEditText.text.toString() )
                 .observe(this, Observer {
-                    when {
-                        it.isFailure -> showError(btn)
-                        it.isSuccess -> showMovies(it.getOrNull())
-                    }
-                } )
+                    it.subscribe(
+                        {
+                            Log.d(TAG, "Succesful next")
+                            this@LoginActivity.showAuthorization(it)
+                        },
+                        {
+                            this@LoginActivity.showError(
+                                this@LoginActivity.findViewById(R.id.login_container)
+                            )
+                        }
+                    )
+                }
+            )
+
         }
     }
 
@@ -80,7 +92,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     @SuppressLint("CommitPrefEdits")
-    private fun showMovies(responseResult: ResponseAuthorization? ) {
+    private fun showAuthorization(responseResult: AuthData? ) {
         val mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
 
         val editor = mSettings.edit()
