@@ -4,7 +4,9 @@ import android.util.Log
 import io.reactivex.rxjava3.core.Observable
 import ru.samsung.itshool.memandos.model.response.AuthRequest
 import ru.samsung.itshool.memandos.model.api.AndroidSchoolAPI
+import ru.samsung.itshool.memandos.model.response.ArrayMemsResponse
 import ru.samsung.itshool.memandos.model.response.AuthResponse
+import ru.samsung.itshool.memandos.model.response.MemResponse
 
 
 class SurfMemesRepo {
@@ -21,6 +23,10 @@ class SurfMemesRepo {
 
         return androidSchoolAPI
                     .authorizate(requestLogin)
+    }
+
+    fun load() : Observable<Collection<MemResponse>> {
+        return androidSchoolAPI.getMems()
     }
 
 

@@ -7,7 +7,7 @@ import ru.samsung.itshool.memandos.APP_PREFERENCES
 class SharedPreferencesUtli {
 
 
-    object companion {
+    companion object {
 
         fun getPrefs(context: Context) : SharedPreferences {
             return context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)

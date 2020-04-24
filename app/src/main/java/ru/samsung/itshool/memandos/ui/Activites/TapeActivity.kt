@@ -42,7 +42,7 @@ class TapeActivity : AppCompatActivity() {
 
         val navigation: BottomNavigationView = findViewById(R.id.navigation_main)
         navigation.setOnNavigationItemSelectedListener(::onNavigationItemSelected)
-        loadFragment(AddingMemeFragment())
+        loadFragment(RibbonFragment())
     }
 
 
@@ -50,6 +50,10 @@ class TapeActivity : AppCompatActivity() {
     fun onNavigationItemSelected(item : MenuItem) : Boolean{
         when(item.itemId) {
             R.id.dashboard -> {
+                loadFragment(RibbonFragment())
+                return true
+            }
+            R.id.item_adding_mem -> {
                 loadFragment(AddingMemeFragment())
                 return true
             }

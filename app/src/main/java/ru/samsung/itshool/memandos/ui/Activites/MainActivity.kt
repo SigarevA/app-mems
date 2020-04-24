@@ -9,7 +9,7 @@ import kotlin.concurrent.schedule
 
 class MainActivity : AppCompatActivity() {
 
-    val TAG : String = MainActivity::class.java.name;
+    val TAG : String = MainActivity::class.java.name
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

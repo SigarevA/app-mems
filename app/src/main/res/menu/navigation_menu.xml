@@ -14,7 +14,7 @@
         android:id="@+id/item_adding_mem"
         app:showAsAction="always"
         android:title="TODO"
-        android:icon="@drawable/ic_center_icon" />
+        android:icon="@drawable/ic_add_circle_black" />
     <item
         android:id="@+id/item_profile"
         app:showAsAction="always"

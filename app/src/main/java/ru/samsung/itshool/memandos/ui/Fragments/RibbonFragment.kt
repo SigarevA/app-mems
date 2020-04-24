@@ -2,100 +2,142 @@ package ru.samsung.itshool.memandos.ui.Fragments
 
 import android.content.Context
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.snackbar.Snackbar
 import ru.samsung.itshool.memandos.R
+import ru.samsung.itshool.memandos.domain.Mem
+import ru.samsung.itshool.memandos.ui.VM.RobbionVM
+import ru.samsung.itshool.memandos.ui.adapters.MemsAdapter
+import ru.samsung.itshool.memandos.utils.SnackBarsUtil
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import java.util.*
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [RibbonFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [RibbonFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class RibbonFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var textFailure : TextView
+    private lateinit var progressBar : ProgressBar
+    private lateinit var swipeContainer : SwipeRefreshLayout
+    private lateinit var memsAdapter : MemsAdapter
+    private lateinit var staggeredGridLayoutManager : StaggeredGridLayoutManager
+
+    private lateinit var robbionVM: RobbionVM
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
+        Log.d(TAG, "create ribbon fragment")
+        retainInstance = true
+
+        robbionVM = ViewModelProvider(this).get(RobbionVM::class.java)
+
     }
+
+
+    fun bindingView(v : View ) {
+        swipeContainer = v.findViewById(R.id.swipeContainer)
+
+        swipeContainer.setOnRefreshListener {
+            robbionVM.refreshMemes().observe(viewLifecycleOwner, Observer {
+                diffResult ->
+                    when {
+                        diffResult.isSuccess -> {
+                            swipeContainer.isRefreshing = false
+                            diffResult.getOrNull()?.dispatchUpdatesTo(memsAdapter)
+                        }
+                        diffResult.isFailure -> {
+                            failureLoad(v)
+                        }
+                    }
+                }
+            )
+        }
+
+        staggeredGridLayoutManager = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
+
+        textFailure = v.findViewById(R.id.text_failure)
+        progressBar = v.findViewById(R.id.progressBar)
+        recyclerView = v.findViewById(R.id.recycler_view_mems)
+    }
+
+    fun initVM( v : View) {
+
+        robbionVM.getMemes().observe(viewLifecycleOwner,  Observer<Result<Collection<Mem>>> {
+            when {
+                it.isSuccess -> {
+                    val memes = it.getOrDefault( LinkedList() ).toMutableList()
+                    successLoadMemes(v, memes)
+                }
+                it.isFailure -> {
+                    failureLoadMemes()
+                }
+            }
+        })
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ribbon, container, false)
+        val v = inflater.inflate(R.layout.fragment_ribbon, container, false)
+
+        bindingView(v)
+        initVM(v)
+
+        return v
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+
+
+    fun successLoadMemes(v : View ,memes : List<Mem>) {
+        recyclerView.layoutManager = staggeredGridLayoutManager
+        val memsAdapter2 = MemsAdapter( memes.toTypedArray() )
+        Log.d(TAG, "i : " + memes.size)
+        Log.d(TAG,  " " + memes)
+        recyclerView.adapter = memsAdapter2
+        swipeContainer.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
+
+        Log.d(TAG, "success")
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
+    fun failureLoadMemes() {
+        progressBar.visibility = View.GONE
+        textFailure.visibility = View.VISIBLE
+        Log.d(TAG, "failure")
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+    fun failureLoad(v :  View ) {
+        swipeContainer.isRefreshing = false
+        SnackBarsUtil.errorSnackBar( R.string.failureRefresh.toString(), v)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RibbonFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RibbonFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() = RibbonFragment()
+        private val TAG = RibbonFragment::class.java.name
     }
 }

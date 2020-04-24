@@ -6,4 +6,5 @@
     <color name="colorSurf">#23213F</color>
     <color name="backSnackBar">#FF575D</color>
     <color name="toolBarBack">#312F51</color>
+    <color name="darkSlateGrey">#2F4F4F</color>
 </resources>

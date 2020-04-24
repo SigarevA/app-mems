@@ -11,13 +11,11 @@
 
 
     <style name="floating_la">
-
         <item name="helperTextColor">   #ffffffff   </item>
         <item name="errorColor">        #FF575D     </item>
         <item name="android:textSize">  12sp        </item>
         <item name="secondaryColor">    #61FFFFFF   </item>
         <item name="primaryColor">      #1EF0D7     </item>
-
     </style>
 
 
@@ -32,4 +30,10 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
+
+    <style name="DarkProgressBar" parent="@style/Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminateTint">@color/darkSlateGrey</item>
+        <item name="android:color">@color/darkSlateGrey</item>
+
+    </style>
 </resources>
