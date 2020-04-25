@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.Activites.TapeActivity"></activity>
+        <activity android:name=".ui.Activites.DetailMemActivity"></activity>
+        <activity android:name=".ui.Activites.TapeActivity" />
         <activity android:name=".ui.Activites.LoginActivity" />
         <activity android:name=".ui.Activites.MainActivity">
             <intent-filter>

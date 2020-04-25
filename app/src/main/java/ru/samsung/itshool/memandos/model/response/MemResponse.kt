@@ -9,7 +9,7 @@ data class MemResponse(
     @SerializedName("title") val title: String?,
     @SerializedName("description") val description: String?,
     @SerializedName("isFavorite") val favorite: Boolean?,
-    @SerializedName("createdDate") val createdDate : Int?,
+    @SerializedName("createdDate") val createdDate : Long?,
     @SerializedName("photoUrl") val photoUrl : String?
 ) : BaseResponse<Mem> {
 

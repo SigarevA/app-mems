@@ -22,6 +22,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.domain.Mem
+import ru.samsung.itshool.memandos.ui.Activites.DetailMemActivity
 import ru.samsung.itshool.memandos.ui.VM.RobbionVM
 import ru.samsung.itshool.memandos.ui.adapters.MemsAdapter
 import ru.samsung.itshool.memandos.utils.SnackBarsUtil
@@ -29,7 +30,7 @@ import ru.samsung.itshool.memandos.utils.SnackBarsUtil
 import java.util.*
 
 
-class RibbonFragment : Fragment() {
+class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener{
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var textFailure : TextView
@@ -50,7 +51,6 @@ class RibbonFragment : Fragment() {
         retainInstance = true
 
         robbionVM = ViewModelProvider(this).get(RobbionVM::class.java)
-
     }
 
 
@@ -113,7 +113,7 @@ class RibbonFragment : Fragment() {
 
     fun successLoadMemes(v : View ,memes : List<Mem>) {
         recyclerView.layoutManager = staggeredGridLayoutManager
-        val memsAdapter2 = MemsAdapter( memes.toTypedArray() )
+        val memsAdapter2 = MemsAdapter( memes.toTypedArray(), this)
         Log.d(TAG, "i : " + memes.size)
         Log.d(TAG,  " " + memes)
         recyclerView.adapter = memsAdapter2
@@ -139,5 +139,12 @@ class RibbonFragment : Fragment() {
         @JvmStatic
         fun newInstance() = RibbonFragment()
         private val TAG = RibbonFragment::class.java.name
+    }
+
+    override fun onItemClick(mem: Mem) {
+        context?.let {
+            val intent = DetailMemActivity.getIntent(it, mem)
+            startActivity(intent)
+        }
     }
 }

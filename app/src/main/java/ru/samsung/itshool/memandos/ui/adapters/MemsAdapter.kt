@@ -11,9 +11,12 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_ribbon.*
 import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.domain.Mem
+import ru.samsung.itshool.memandos.ui.Activites.DetailMemActivity
 
-class MemsAdapter(val mems : Array<Mem>) : RecyclerView.Adapter<MemsAdapter.ViewHolder>() {
-
+class MemsAdapter(val mems : Array<Mem>,
+                  val listener : AdapterInteractionListener)
+    : RecyclerView.Adapter<MemsAdapter.ViewHolder>()
+{
 
     class ViewHolder(v : View) : RecyclerView.ViewHolder(v) {
         val MemTitle : TextView
@@ -40,8 +43,16 @@ class MemsAdapter(val mems : Array<Mem>) : RecyclerView.Adapter<MemsAdapter.View
         Glide.with(holder.itemView)
             .load(mems[position].photoUrl)
             .into(holder.imgMem)
+        holder.imgMem.setOnClickListener {
+            listener.onItemClick(mems[position])
+        }
     }
 
+
+    @FunctionalInterface
+    interface AdapterInteractionListener {
+        fun onItemClick(mem : Mem )
+    }
 
     override fun getItemCount() = mems.size
 
