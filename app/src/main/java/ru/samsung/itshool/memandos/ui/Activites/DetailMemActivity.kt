@@ -50,7 +50,6 @@ class DetailMemActivity : AppCompatActivity() {
             .into(imageMem)
 
 
-
         memDescription = findViewById(R.id.mem_description)
         memDescription.text = intent.getStringExtra(MEM_DESCRIPTION)
 

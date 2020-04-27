@@ -8,6 +8,8 @@
     android:background="@color/colorSurf">
 
 
+
+
     <androidx.appcompat.widget.Toolbar
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/main_toolbar"
@@ -74,5 +76,6 @@
         app:layout_constraintTop_toBottomOf="@id/line_mem"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

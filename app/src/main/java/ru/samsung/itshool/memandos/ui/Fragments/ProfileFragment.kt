@@ -3,99 +3,117 @@ package ru.samsung.itshool.memandos.ui.Fragments
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.view.*
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.bumptech.glide.Glide
+import ru.samsung.itshool.memandos.NAME
 import ru.samsung.itshool.memandos.R
+import ru.samsung.itshool.memandos.USER_DESCRIPTION
+import ru.samsung.itshool.memandos.domain.Mem
+import ru.samsung.itshool.memandos.ui.Activites.DetailMemActivity
+import ru.samsung.itshool.memandos.ui.VM.ProfileVM
+import ru.samsung.itshool.memandos.ui.adapters.MemsAdapter
+import ru.samsung.itshool.memandos.utils.SharedPreferencesUtli
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [ProfileFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
+class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
+
+    private lateinit var nameUserTextView : TextView
+    private lateinit var descriptionUserTextView : TextView
+    private lateinit var profileToolbar : Toolbar
+    private lateinit var memesRecyrcleView : RecyclerView
+    private lateinit var staggeredGridLayoutManager : StaggeredGridLayoutManager
+
+    private lateinit var profileVM: ProfileVM
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        setHasOptionsMenu(true)
+
+        profileVM = ViewModelProvider(this).get(ProfileVM::class.java)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        val v =  inflater.inflate(R.layout.fragment_profile, container, false)
+        init(v)
+
+        return v
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+    private fun init(v : View) {
+        initToolBar(v)
+
+        staggeredGridLayoutManager = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
+
+        nameUserTextView = v.findViewById(R.id.name_user)
+        descriptionUserTextView = v.findViewById(R.id.descriptoin_user)
+        memesRecyrcleView = v.findViewById(R.id.recycler_view_my_mems)
+
+        memesRecyrcleView.layoutManager = staggeredGridLayoutManager
+        val img = v.findViewById<ImageView>(R.id.img_user)
+
+
+        context?.let{
+            with(SharedPreferencesUtli) {
+                Glide
+                    .with(v)
+                    .load(photoURL )
+                    .into(img)
+                nameUserTextView.text = retriveData(it, NAME) ?: "name"
+                descriptionUserTextView.text = retriveData(it, USER_DESCRIPTION) ?: "des"
+            }
+        }
+
+
+        context?.let{
+            profileVM.getMyMemes(it).observe(viewLifecycleOwner, Observer {
+                val memsAdapter2 = MemsAdapter( it.toTypedArray(), this)
+                memesRecyrcleView.adapter = memsAdapter2
+                Log.d(TAG, "Size : ${it.size}")
+            })
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
+
+    fun initToolBar(v : View) {
+        profileToolbar = v.findViewById(R.id.profile_toolbar)
+        profileToolbar.title = ""
+
+        with((activity as AppCompatActivity)){
+            this.setSupportActionBar(profileToolbar)
+        }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.profile_menu, menu)
+        Log.d(TAG, "options menu")
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onItemClick(mem: Mem) {
+        context?.let {
+            val intent = DetailMemActivity.getIntent(it, mem)
+            startActivity(intent)
+        }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        const val TAG = "ProfileFragment"
+        const val photoURL = "https://i.ibb.co/7jyvKdP/c3a403eaf82be4ac51ed8c632c3089c5-f24d80acb4ee32776f2667ff8d6452cb2ca88fa8.jpg"
     }
 }

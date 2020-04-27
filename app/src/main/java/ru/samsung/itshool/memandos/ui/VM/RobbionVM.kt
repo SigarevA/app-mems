@@ -15,9 +15,10 @@ import java.util.*
 
 class RobbionVM : ViewModel() {
 
-    private val surfMemesRepo = SurfMemesRepo()
+    private val surfMemesRepo by lazy {SurfMemesRepo()}
 
-     private var _memes : List<Mem> = Collections.emptyList()
+
+    private var _memes : List<Mem> = Collections.emptyList()
 
 
     fun refreshMemes() : LiveData<Result<DiffUtil.DiffResult>> {

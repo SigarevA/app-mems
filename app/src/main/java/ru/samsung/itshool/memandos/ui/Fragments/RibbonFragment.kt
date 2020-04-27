@@ -5,12 +5,12 @@ import android.net.Uri
 import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -39,6 +39,8 @@ class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener{
     private lateinit var memsAdapter : MemsAdapter
     private lateinit var staggeredGridLayoutManager : StaggeredGridLayoutManager
 
+    private lateinit var ribbonToolbar : Toolbar
+
     private lateinit var robbionVM: RobbionVM
 
 
@@ -50,11 +52,19 @@ class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener{
         Log.d(TAG, "create ribbon fragment")
         retainInstance = true
 
+        setHasOptionsMenu(true)
         robbionVM = ViewModelProvider(this).get(RobbionVM::class.java)
     }
 
 
     fun bindingView(v : View ) {
+
+        ribbonToolbar = v.findViewById(R.id.main_toolbar)
+
+        with((activity as AppCompatActivity)){
+            this.setSupportActionBar(ribbonToolbar)
+        }
+
         swipeContainer = v.findViewById(R.id.swipeContainer)
 
         swipeContainer.setOnRefreshListener {
@@ -141,10 +151,18 @@ class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener{
         private val TAG = RibbonFragment::class.java.name
     }
 
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_menu, menu)
+        Log.d(TAG, "optins menu ribbion")
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
     override fun onItemClick(mem: Mem) {
         context?.let {
             val intent = DetailMemActivity.getIntent(it, mem)
             startActivity(intent)
         }
+
     }
 }

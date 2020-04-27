@@ -1,14 +1,12 @@
 package ru.samsung.itshool.memandos.ui.Activites
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.FrameLayout
-import android.widget.TextView
-import android.widget.Toast
+
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,6 +16,7 @@ import ru.samsung.itshool.memandos.APP_PREFERENCES
 import ru.samsung.itshool.memandos.NAME
 import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.ui.Fragments.AddingMemeFragment
+import ru.samsung.itshool.memandos.ui.Fragments.ProfileFragment
 import ru.samsung.itshool.memandos.ui.Fragments.RibbonFragment
 
 class TapeActivity : AppCompatActivity() {
@@ -37,8 +36,6 @@ class TapeActivity : AppCompatActivity() {
 
 
     private fun init() {
-        toolbar = findViewById(R.id.main_toolbar)
-        setSupportActionBar(toolbar)
 
         val navigation: BottomNavigationView = findViewById(R.id.navigation_main)
         navigation.setOnNavigationItemSelectedListener(::onNavigationItemSelected)
@@ -54,17 +51,16 @@ class TapeActivity : AppCompatActivity() {
                 return true
             }
             R.id.item_adding_mem -> {
-                loadFragment(AddingMemeFragment())
+                val intent = Intent(this, AddingMemActivity::class.java)
+                startActivity(intent)
+                return false
+            }
+            R.id.item_profile -> {
+                loadFragment(ProfileFragment())
                 return true
             }
         }
-
         return false
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        getMenuInflater().inflate(R.menu.main_menu, menu)
-        return true
     }
 
 
