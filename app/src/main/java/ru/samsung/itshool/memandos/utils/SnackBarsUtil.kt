@@ -15,6 +15,7 @@ class SnackBarsUtil {
             val mSnackBar =  Snackbar.make(v, text, Snackbar.LENGTH_SHORT)
             mSnackBar.setBackgroundTint( R.color.backSnackBar)
             mSnackBar.setTextColor(Color.WHITE)
+            mSnackBar.show()
         }
 
     }

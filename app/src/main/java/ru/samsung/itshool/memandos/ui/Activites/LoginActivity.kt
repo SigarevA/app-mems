@@ -19,6 +19,7 @@ import ru.samsung.itshool.memandos.*
 import ru.samsung.itshool.memandos.domain.AuthData
 import ru.samsung.itshool.memandos.model.response.AuthResponse
 import ru.samsung.itshool.memandos.ui.VM.LoginVM
+import ru.samsung.itshool.memandos.utils.SharedPreferencesUtli
 
 val QUANTITY : Int = 5
 
@@ -93,17 +94,14 @@ class LoginActivity : AppCompatActivity() {
 
     @SuppressLint("CommitPrefEdits")
     private fun showAuthorization(responseResult: AuthData? ) {
-        val mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
 
-        val editor = mSettings.edit()
         responseResult?.let {
-            editor.putString(APP_ACCESS_TOKEN, responseResult.accessToken)
-            editor.putInt(ID, responseResult.userInfo.id)
-            editor.putString(NAME, responseResult.userInfo.username)
-            editor.putString(FIRST_NAME, responseResult.userInfo.lastName)
-            editor.putString(LAST_NAME, responseResult.userInfo.lastName)
-            editor.putString(USER_DESCRIPTION, responseResult.userInfo.userDescription)
-            editor.apply()
+            SharedPreferencesUtli.insertData(this, APP_ACCESS_TOKEN, responseResult.accessToken)
+            SharedPreferencesUtli.insertData(this, ID, responseResult.userInfo.id )
+            SharedPreferencesUtli.insertData(this, NAME, responseResult.userInfo.username)
+            SharedPreferencesUtli.insertData(this, FIRST_NAME, responseResult.userInfo.firstName)
+            SharedPreferencesUtli.insertData(this, LAST_NAME, responseResult.userInfo.lastName)
+            SharedPreferencesUtli.insertData(this, USER_DESCRIPTION, responseResult.userInfo.userDescription)
             intent = Intent(this, TapeActivity::class.java)
             startActivity(intent)
             Log.d(TAG, responseResult?.accessToken)
