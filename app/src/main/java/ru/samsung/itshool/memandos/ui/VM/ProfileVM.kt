@@ -19,7 +19,7 @@ class ProfileVM : ViewModel() {
 
     fun getMyMemes(context: Context): LiveData<List<Mem>> {
 
-        val memes = MutableLiveData<List<Mem>>()
+        val memesLiveData = MutableLiveData<List<Mem>>()
 
         val mDataBase = MemDatabase.getInstance(context)
         mDataBase.memDao().getAll()
@@ -27,14 +27,14 @@ class ProfileVM : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    memes.value = it
+                    memesLiveData.value = it
                 },
                 {
                     Log.d(TAG, it.message)
                 }
             )
 
-        return memes
+        return memesLiveData
     }
 
     companion object {

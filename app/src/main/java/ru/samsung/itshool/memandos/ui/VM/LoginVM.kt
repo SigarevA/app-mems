@@ -22,7 +22,7 @@ class LoginVM(application: Application) : AndroidViewModel(application) {
 
         Log.d(TAG, "autheraziton")
 
-        val resp = MutableLiveData<Result<Unit>>()
+        val authLiveData = MutableLiveData<Result<Unit>>()
         surfAuthRepo.authorize(
             AuthRequest(
                 login,
@@ -35,12 +35,12 @@ class LoginVM(application: Application) : AndroidViewModel(application) {
             .subscribe(
                 {
                     UserStorageSharedPref.saveUserData(it.userInfo, getApplication())
-                    resp.value = Result.success(Unit)
+                    authLiveData.value = Result.success(Unit)
                 },
                 {
-                    resp.value = Result.failure(it)
+                    authLiveData.value = Result.failure(it)
                 }
             )
-        return resp
+        return authLiveData
     }
 }
