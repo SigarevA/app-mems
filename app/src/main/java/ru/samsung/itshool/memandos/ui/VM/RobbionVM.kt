@@ -58,7 +58,7 @@ class RobbionVM : ViewModel() {
 
 
     private fun loadMemes() : Observable<List<Mem>> {
-        return surfMemesRepo.load()
+        return surfMemesRepo.loadMemes()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {

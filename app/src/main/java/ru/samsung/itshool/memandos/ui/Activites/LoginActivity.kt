@@ -1,25 +1,20 @@
 package ru.samsung.itshool.memandos.ui.Activites
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.Window
-import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import studio.carbonylgroup.textfieldboxes.TextFieldBoxes
-import com.google.android.material.snackbar.Snackbar
 import ru.samsung.itshool.memandos.*
-import ru.samsung.itshool.memandos.domain.AuthData
-import ru.samsung.itshool.memandos.model.response.AuthResponse
 import ru.samsung.itshool.memandos.ui.VM.LoginVM
-import ru.samsung.itshool.memandos.utils.SharedPreferencesUtli
+import ru.samsung.itshool.memandos.utils.SnackBarsUtil
 
 val QUANTITY : Int = 5
 
@@ -28,83 +23,82 @@ class LoginActivity : AppCompatActivity() {
     private val TAG : String = LoginActivity::class.java.name
 
     private lateinit var loginVM: LoginVM
+    private lateinit var btnLogin : AppCompatButton
+    private lateinit var passwordEditText : EditText
+    private lateinit var loginEditText : EditText
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_login)
         getSupportActionBar()?.hide()
-        loginVM = LoginVM()
+        loginVM = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+            .create(LoginVM::class.java)
 
         Log.d(TAG, "Create activity Login")
 
-        init()
+
+        initView()
+
+        initListener()
     }
 
 
-    private fun init() {
-
-        findViewById<TextFieldBoxes>(R.id.text_field_boxes2)
+    private fun initView(){
+        findViewById<TextFieldBoxes>(R.id.text_field_boxes_password)
             .setHelperText(String.format("Пароль должен содержать %d символов",
                 QUANTITY
             ))
+        findViewById<TextFieldBoxes>(R.id.text_field_boxes_login).maxCharacters = QUANTITY
+        btnLogin = findViewById(R.id.Loginbtn)
+        passwordEditText = findViewById(R.id.login_value)
+        loginEditText = findViewById(R.id.password_value)
+    }
 
-        findViewById<TextFieldBoxes>(R.id.text_field_boxes2).maxCharacters =
-            QUANTITY
+    private fun initListener() {
 
-        val btnLogin = findViewById<Button>(R.id.Loginbtn)
         btnLogin.setOnClickListener {
-            val passwordEditText = findViewById<EditText>(R.id.extended_edit_text2)
-            if (passwordEditText.text.toString().trim().equals(""))
-                findViewById<TextFieldBoxes>(R.id.text_field_boxes2).setError("Поле не может быть пустым", false)
-            val loginEditText = findViewById<EditText>(R.id.extended_edit_text)
-            if (loginEditText.text.toString().trim().equals(""))
-                findViewById<TextFieldBoxes>(R.id.text_field_boxes).setError("Поле не может быть пустым!", true)
-
-            Log.d(TAG, "Listener button")
-
-            loginVM.autheraziton(loginEditText.text.toString(),passwordEditText.text.toString() )
-                .observe(this, Observer {
-                    it.subscribe(
-                        {
-                            Log.d(TAG, "Succesful next")
-                            this@LoginActivity.showAuthorization(it)
-                        },
-                        {
-                            this@LoginActivity.showError(
-                                this@LoginActivity.findViewById(R.id.login_container)
-                            )
+            val emptyPassword = passwordEditText.text.toString().trim().equals("")
+            val emptyLogin = loginEditText.text.toString().trim().equals("")
+            if (emptyPassword)
+                findViewById<TextFieldBoxes>(R.id.text_field_boxes_password).setError(
+                    "Поле не может быть пустым",
+                    false
+                )
+            if (emptyLogin)
+                findViewById<TextFieldBoxes>(R.id.text_field_boxes_login).setError(
+                    "Поле не может быть пустым!",
+                    true
+                )
+            if (!emptyLogin && !emptyPassword) {
+                loginVM.autheraziton(loginEditText.text.toString(),passwordEditText.text.toString() )
+                    .observe(this, Observer {
+                        when{
+                            it.isSuccess -> {
+                                successAuthorize()
+                            }
+                            it.isFailure -> {
+                                errorAuthorize(this@LoginActivity.findViewById(R.id.login_container))
+                            }
                         }
-                    )
-                }
-            )
-
+                    }
+                )
+            }
         }
     }
 
 
-    private fun showError(view : View) {
-        val mSnackbar = Snackbar.make(view , "Вы ввели неверные данные.\nПопробуйте еще раз.", Snackbar.LENGTH_LONG)
-            .setAction("Action", null)
-        val snackbarView : View = mSnackbar.getView()
-        snackbarView.setBackgroundResource(R.color.backSnackBar)
-        val snackTextView = snackbarView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-        snackTextView.setTextColor(Color.RED)
+
+
+    private fun errorAuthorize(view : View) {
+        SnackBarsUtil.errorSnackBar("Вы ввели неверные данные.\nПопробуйте еще раз.", view)
     }
 
     @SuppressLint("CommitPrefEdits")
-    private fun showAuthorization(responseResult: AuthData? ) {
-
-        responseResult?.let {
-            SharedPreferencesUtli.insertData(this, APP_ACCESS_TOKEN, responseResult.accessToken)
-            SharedPreferencesUtli.insertData(this, ID, responseResult.userInfo.id )
-            SharedPreferencesUtli.insertData(this, NAME, responseResult.userInfo.username)
-            SharedPreferencesUtli.insertData(this, FIRST_NAME, responseResult.userInfo.firstName)
-            SharedPreferencesUtli.insertData(this, LAST_NAME, responseResult.userInfo.lastName)
-            SharedPreferencesUtli.insertData(this, USER_DESCRIPTION, responseResult.userInfo.userDescription)
-            intent = Intent(this, TapeActivity::class.java)
-            startActivity(intent)
-            Log.d(TAG, responseResult?.accessToken)
-        }
+    private fun successAuthorize() {
+        intent = Intent(this, TapeActivity::class.java)
+        startActivity(intent)
     }
 }
+

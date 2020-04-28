@@ -3,22 +3,19 @@ package ru.samsung.itshool.memandos.ui.Activites
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.FrameLayout
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
+import ru.samsung.itshool.memandos.APP_ACCESS_TOKEN
 
 import ru.samsung.itshool.memandos.APP_PREFERENCES
-import ru.samsung.itshool.memandos.NAME
 import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.ui.Fragments.AddingMemeFragment
 import ru.samsung.itshool.memandos.ui.Fragments.RibbonFragment
+import ru.samsung.itshool.memandos.utils.SharedPreferencesUtli
 
 class TapeActivity : AppCompatActivity() {
 
@@ -29,9 +26,6 @@ class TapeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_tape)
 
         init()
-
-
-        val mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
 
     }
 
@@ -72,6 +66,11 @@ class TapeActivity : AppCompatActivity() {
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(R.id.container, fragment)
         ft.commit()
+    }
+
+
+    companion object{
+        private const val TAG = "TapeActivity"
     }
 
 }
