@@ -1,6 +1,7 @@
 package ru.samsung.itshool.memandos.model.repo
 
 import android.util.Log
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import ru.samsung.itshool.memandos.model.response.AuthRequest
 import ru.samsung.itshool.memandos.model.api.AndroidSchoolAPI
@@ -27,6 +28,12 @@ class SurfMemesRepo {
 
     fun load() : Observable<Collection<MemResponse>> {
         return androidSchoolAPI.getMems()
+    }
+
+
+    fun logout() : Completable {
+        return androidSchoolAPI
+            .logout()
     }
 
 

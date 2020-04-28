@@ -15,9 +15,10 @@ import com.google.android.material.snackbar.Snackbar
 import ru.samsung.itshool.memandos.APP_PREFERENCES
 import ru.samsung.itshool.memandos.NAME
 import ru.samsung.itshool.memandos.R
-import ru.samsung.itshool.memandos.ui.Fragments.AddingMemeFragment
+import ru.samsung.itshool.memandos.ui.Fragments.LogoutDialogFragment
 import ru.samsung.itshool.memandos.ui.Fragments.ProfileFragment
 import ru.samsung.itshool.memandos.ui.Fragments.RibbonFragment
+import ru.samsung.itshool.memandos.utils.SnackBarsUtil
 
 class TapeActivity : AppCompatActivity() {
 
@@ -66,8 +67,15 @@ class TapeActivity : AppCompatActivity() {
 
     fun loadFragment(fragment: Fragment) {
         val ft = supportFragmentManager.beginTransaction()
-        ft.replace(R.id.container, fragment)
+        ft.replace(R.id.container, fragment, PROFILE_FRAGMENT)
         ft.commit()
+    }
+
+
+
+
+    companion object {
+        private const val PROFILE_FRAGMENT  = "profileFragment"
     }
 
 }

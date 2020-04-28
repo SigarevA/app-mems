@@ -1,12 +1,16 @@
 package ru.samsung.itshool.memandos.ui.Fragments
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -21,12 +25,15 @@ import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.USER_DESCRIPTION
 import ru.samsung.itshool.memandos.domain.Mem
 import ru.samsung.itshool.memandos.ui.Activites.DetailMemActivity
+import ru.samsung.itshool.memandos.ui.Activites.LoginActivity
 import ru.samsung.itshool.memandos.ui.VM.ProfileVM
 import ru.samsung.itshool.memandos.ui.adapters.MemsAdapter
 import ru.samsung.itshool.memandos.utils.SharedPreferencesUtli
+import ru.samsung.itshool.memandos.utils.SnackBarsUtil
 
 
-class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
+class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener,
+    LogoutDialogFragment.NoticeDialogListener {
 
     private lateinit var nameUserTextView : TextView
     private lateinit var descriptionUserTextView : TextView
@@ -105,6 +112,22 @@ class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.user_logout -> {
+                activity?.let {
+                    val dialog = LogoutDialogFragment(this)
+                    val ft = it.supportFragmentManager.beginTransaction()
+                    dialog.show(ft, "dialog")
+                }
+            }
+        }
+
+
+        return false
+    }
+
     override fun onItemClick(mem: Mem) {
         context?.let {
             val intent = DetailMemActivity.getIntent(it, mem)
@@ -115,5 +138,21 @@ class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
     companion object {
         const val TAG = "ProfileFragment"
         const val photoURL = "https://i.ibb.co/7jyvKdP/c3a403eaf82be4ac51ed8c632c3089c5-f24d80acb4ee32776f2667ff8d6452cb2ca88fa8.jpg"
+    }
+
+    override fun onDialogPositiveClick() {
+        profileVM.logout().observe(this, Observer {
+            when{
+                it.isSuccess -> {
+                    val intent = Intent(activity, LoginActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                }
+                it.isFailure -> {
+                    SnackBarsUtil.errorSnackBar("Выйти не удалось", memesRecyrcleView)
+                }
+            }
+        })
     }
 }

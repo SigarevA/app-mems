@@ -7,7 +7,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.DialogFragment
 import ru.samsung.itshool.memandos.R
 
-class DialogFragment : DialogFragment()  {
+open class DialogFragment : DialogFragment()  {
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
