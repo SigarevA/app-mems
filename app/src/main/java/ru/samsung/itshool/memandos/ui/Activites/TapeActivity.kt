@@ -1,21 +1,18 @@
 package ru.samsung.itshool.memandos.ui.Activites
 
-import android.content.Context
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import ru.samsung.itshool.memandos.APP_ACCESS_TOKEN
-
-import ru.samsung.itshool.memandos.APP_PREFERENCES
 import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.ui.Fragments.AddingMemeFragment
 import ru.samsung.itshool.memandos.ui.Fragments.RibbonFragment
-import ru.samsung.itshool.memandos.utils.SharedPreferencesUtli
+
 
 class TapeActivity : AppCompatActivity() {
 
