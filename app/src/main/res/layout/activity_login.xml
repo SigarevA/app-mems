@@ -14,11 +14,10 @@
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/line_3"
-        app:layout_constraintGuide_begin="80dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        />
+        app:layout_constraintGuide_begin="80dp" />
 
     <LinearLayout
 
@@ -43,9 +42,9 @@
             <studio.carbonylgroup.textfieldboxes.ExtendedEditText
                 android:id="@+id/login_value"
                 style="@style/input_text"
-                android:inputType="phone"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="phone" />
 
         </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
 
@@ -74,39 +73,35 @@
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottomLine"
-        app:layout_constraintGuide_end="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        />
+        app:layout_constraintGuide_end="16dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/rightLine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="16dp"
-        />
+        app:layout_constraintGuide_end="16dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftLine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp"
-        />
+        app:layout_constraintGuide_begin="16dp" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/Loginbtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#1EF0D7"
+        android:padding="15dp"
+        android:text="@string/loginbtn"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@id/bottomLine"
         app:layout_constraintLeft_toLeftOf="@id/leftLine"
-        app:layout_constraintRight_toRightOf="@id/rightLine"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:textSize="14sp"
-        android:background="#1EF0D7"
-        android:layout_width="0dp"
-        android:text="@string/loginbtn"
-        />
+        app:layout_constraintRight_toRightOf="@id/rightLine" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

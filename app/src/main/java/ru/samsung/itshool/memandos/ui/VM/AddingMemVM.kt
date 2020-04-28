@@ -1,5 +1,6 @@
 package ru.samsung.itshool.memandos.ui.VM
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -12,12 +13,15 @@ import ru.samsung.itshool.memandos.model.repo.MemDatabase
 import ru.samsung.itshool.memandos.ui.Activites.AddingMemActivity
 import java.util.*
 
+private const val TAG = "AddingMemVM"
+
 class AddingMemVM(application: Application) : AndroidViewModel(application) {
 
     private val memDataBase : MemDatabase = MemDatabase.getInstance(getApplication())
 
 
-    fun addMem(mem : Mem) : LiveData<Result<Unit>> {
+
+    fun saveMem(mem : Mem) : LiveData<Result<Unit>> {
 
         val resp = MutableLiveData<Result<Unit>>()
 
@@ -26,10 +30,12 @@ class AddingMemVM(application: Application) : AndroidViewModel(application) {
             .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
             .subscribe (
                 {
-
-                    Log.d(AddingMemActivity.TAG, "success")
+                    resp.value =Result.success(Unit)
+                    Log.d(TAG, "success")
                 },
-                {}
+                {
+                    resp.value = Result.failure(it)
+                }
             )
 
         return resp

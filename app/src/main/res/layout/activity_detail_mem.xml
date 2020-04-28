@@ -4,47 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Activites.DetailMemActivity"
-    android:background="@color/colorSurf">
-
-
+    android:background="@color/colorSurf"
+    tools:context=".ui.Activites.DetailMemActivity">
 
 
     <androidx.appcompat.widget.Toolbar
-        app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/main_toolbar"
+        style="@style/Toolbar"
         android:layout_width="match_parent"
-        style="@style/Toolbar"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
         android:id="@+id/detail_title_mem"
+        style="@style/detailTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/main_toolbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        style="@style/detailTitle"
         android:layout_margin="16dp"
         android:padding="8dp"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_toolbar" />
 
     <ImageView
         android:id="@+id/detail_img_mem"
-        android:layout_height="wrap_content"
         android:layout_width="0dp"
-        app:layout_constraintTop_toBottomOf="@id/detail_title_mem"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_title_mem" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/line_mem"
-        android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/detail_img_mem"
-        >
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/detail_img_mem">
 
         <TextView
             android:id="@+id/date_created_mem"
@@ -61,21 +56,19 @@
             android:src="@drawable/ic_favorite"
 
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
     <TextView
-        android:padding="16dp"
         android:id="@+id/mem_description"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/line_mem"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line_mem"
 
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,7 +16,7 @@ import ru.samsung.itshool.memandos.*
 import ru.samsung.itshool.memandos.ui.VM.LoginVM
 import ru.samsung.itshool.memandos.utils.SnackBarsUtil
 
-val QUANTITY : Int = 5
+private val QUANTITY : Int = 5
 
 class LoginActivity : AppCompatActivity() {
 

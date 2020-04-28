@@ -10,20 +10,25 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.bumptech.glide.Glide
 import ru.samsung.itshool.memandos.NAME
 import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.USER_DESCRIPTION
 import ru.samsung.itshool.memandos.domain.Mem
 import ru.samsung.itshool.memandos.ui.Activites.DetailMemActivity
+import ru.samsung.itshool.memandos.ui.InfoUserView
 import ru.samsung.itshool.memandos.ui.VM.ProfileVM
 import ru.samsung.itshool.memandos.ui.adapters.MemsAdapter
 import ru.samsung.itshool.memandos.utils.SharedPreferencesUtli
+import java.nio.file.attribute.AttributeView
+
+
+
+private const val TAG = "ProfileFragment"
+private const val photoURL = "https://i.ibb.co/w06Zg8H/s1200-1.jpg"
 
 
 class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
@@ -33,9 +38,10 @@ class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
     private lateinit var profileToolbar : Toolbar
     private lateinit var memesRecyrcleView : RecyclerView
     private lateinit var staggeredGridLayoutManager : StaggeredGridLayoutManager
+    private lateinit var imgUser : InfoUserView
+
 
     private lateinit var profileVM: ProfileVM
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,36 +55,17 @@ class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
         savedInstanceState: Bundle?
     ): View? {
         val v =  inflater.inflate(R.layout.fragment_profile, container, false)
-        init(v)
+
+        initView(v)
+        initListener(v)
+
+        fillView()
 
         return v
     }
 
-
-    private fun init(v : View) {
+    private fun initListener(v : View) {
         initToolBar(v)
-
-        staggeredGridLayoutManager = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
-
-        nameUserTextView = v.findViewById(R.id.name_user)
-        descriptionUserTextView = v.findViewById(R.id.descriptoin_user)
-        memesRecyrcleView = v.findViewById(R.id.recycler_view_my_mems)
-
-        memesRecyrcleView.layoutManager = staggeredGridLayoutManager
-        val img = v.findViewById<ImageView>(R.id.img_user)
-
-
-        context?.let{
-            with(SharedPreferencesUtli) {
-                Glide
-                    .with(v)
-                    .load(photoURL )
-                    .into(img)
-                nameUserTextView.text = retriveData(it, NAME) ?: "name"
-                descriptionUserTextView.text = retriveData(it, USER_DESCRIPTION) ?: "des"
-            }
-        }
-
 
         context?.let{
             profileVM.getMyMemes(it).observe(viewLifecycleOwner, Observer {
@@ -90,12 +77,32 @@ class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
     }
 
 
-    fun initToolBar(v : View) {
+    private fun initToolBar(v : View) {
         profileToolbar = v.findViewById(R.id.profile_toolbar)
         profileToolbar.title = ""
 
         with((activity as AppCompatActivity)){
             this.setSupportActionBar(profileToolbar)
+        }
+    }
+
+    private fun initView(v : View) {
+        nameUserTextView = v.findViewById(R.id.name_user)
+        descriptionUserTextView = v.findViewById(R.id.descriptoin_user)
+        memesRecyrcleView = v.findViewById(R.id.recycler_view_my_mems)
+        imgUser = v.findViewById(R.id.img_user)
+    }
+
+    private fun fillView() {
+        staggeredGridLayoutManager = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
+        memesRecyrcleView.layoutManager = staggeredGridLayoutManager
+        imgUser.setImgPath(photoURL)
+
+        context?.let{
+            with(SharedPreferencesUtli) {
+                nameUserTextView.text = retriveData(it, NAME) ?: "name"
+                descriptionUserTextView.text = retriveData(it, USER_DESCRIPTION) ?: "des"
+            }
         }
     }
 
@@ -110,10 +117,5 @@ class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
             val intent = DetailMemActivity.getIntent(it, mem)
             startActivity(intent)
         }
-    }
-
-    companion object {
-        const val TAG = "ProfileFragment"
-        const val photoURL = "https://i.ibb.co/7jyvKdP/c3a403eaf82be4ac51ed8c632c3089c5-f24d80acb4ee32776f2667ff8d6452cb2ca88fa8.jpg"
     }
 }

@@ -30,20 +30,18 @@ import ru.samsung.itshool.memandos.utils.SnackBarsUtil
 import java.util.*
 
 
-class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener{
+class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var textFailure : TextView
-    private lateinit var progressBar : ProgressBar
-    private lateinit var swipeContainer : SwipeRefreshLayout
-    private lateinit var memsAdapter : MemsAdapter
-    private lateinit var staggeredGridLayoutManager : StaggeredGridLayoutManager
+    private lateinit var textFailure: TextView
+    private lateinit var progressBar: ProgressBar
+    private lateinit var swipeContainer: SwipeRefreshLayout
+    private lateinit var memsAdapter: MemsAdapter
+    private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
 
-    private lateinit var ribbonToolbar : Toolbar
+    private lateinit var ribbonToolbar: Toolbar
 
     private lateinit var robbionVM: RobbionVM
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,29 +55,28 @@ class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener{
     }
 
 
-    fun bindingView(v : View ) {
+    fun bindingView(v: View) {
 
         ribbonToolbar = v.findViewById(R.id.main_toolbar)
 
-        with((activity as AppCompatActivity)){
+        with((activity as AppCompatActivity)) {
             this.setSupportActionBar(ribbonToolbar)
         }
 
         swipeContainer = v.findViewById(R.id.swipeContainer)
 
         swipeContainer.setOnRefreshListener {
-            robbionVM.refreshMemes().observe(viewLifecycleOwner, Observer {
-                diffResult ->
-                    when {
-                        diffResult.isSuccess -> {
-                            swipeContainer.isRefreshing = false
-                            diffResult.getOrNull()?.dispatchUpdatesTo(memsAdapter)
-                        }
-                        diffResult.isFailure -> {
-                            failureLoad(v)
-                        }
+            robbionVM.refreshMemes().observe(viewLifecycleOwner, Observer { diffResult ->
+                when {
+                    diffResult.isSuccess -> {
+                        swipeContainer.isRefreshing = false
+                        diffResult.getOrNull()?.dispatchUpdatesTo(memsAdapter)
+                    }
+                    diffResult.isFailure -> {
+                        failureLoad(v)
                     }
                 }
+            }
             )
         }
 
@@ -90,12 +87,12 @@ class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener{
         recyclerView = v.findViewById(R.id.recycler_view_mems)
     }
 
-    fun initVM( v : View) {
+    fun initVM(v: View) {
 
-        robbionVM.getMemes().observe(viewLifecycleOwner,  Observer<Result<Collection<Mem>>> {
+        robbionVM.getMemes().observe(viewLifecycleOwner, Observer<Result<Collection<Mem>>> {
             when {
                 it.isSuccess -> {
-                    val memes = it.getOrDefault( LinkedList() ).toMutableList()
+                    val memes = it.getOrDefault(LinkedList()).toMutableList()
                     successLoadMemes(v, memes)
                 }
                 it.isFailure -> {
@@ -120,12 +117,11 @@ class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener{
     }
 
 
-
-    fun successLoadMemes(v : View ,memes : List<Mem>) {
+    fun successLoadMemes(v: View, memes: List<Mem>) {
         recyclerView.layoutManager = staggeredGridLayoutManager
-        val memsAdapter2 = MemsAdapter( memes.toTypedArray(), this)
+        val memsAdapter2 = MemsAdapter(memes.toTypedArray(), this)
         Log.d(TAG, "i : " + memes.size)
-        Log.d(TAG,  " " + memes)
+        Log.d(TAG, " " + memes)
         recyclerView.adapter = memsAdapter2
         swipeContainer.visibility = View.VISIBLE
         progressBar.visibility = View.GONE
@@ -140,14 +136,15 @@ class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener{
     }
 
 
-    fun failureLoad(v :  View ) {
+    fun failureLoad(v: View) {
         swipeContainer.isRefreshing = false
-        SnackBarsUtil.errorSnackBar( R.string.failureRefresh.toString(), v)
+        SnackBarsUtil.errorSnackBar(R.string.failureRefresh.toString(), v)
     }
 
     companion object {
         @JvmStatic
         fun newInstance() = RibbonFragment()
+
         private val TAG = RibbonFragment::class.java.name
     }
 

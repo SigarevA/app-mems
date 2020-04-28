@@ -9,7 +9,7 @@ import kotlin.concurrent.schedule
 
 class MainActivity : AppCompatActivity() {
 
-    val TAG : String = MainActivity::class.java.name
+    val TAG: String = MainActivity::class.java.name
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,8 +17,8 @@ class MainActivity : AppCompatActivity() {
 
         getSupportActionBar()?.hide()
 
-        val timer : Timer = Timer()
-        val intent : Intent = Intent(this, LoginActivity::class.java)
-        timer.schedule ( 800L) {  startActivity(intent) }
+        val timer: Timer = Timer()
+        val intent: Intent = Intent(this, LoginActivity::class.java)
+        timer.schedule(800L) { startActivity(intent) }
     }
 }

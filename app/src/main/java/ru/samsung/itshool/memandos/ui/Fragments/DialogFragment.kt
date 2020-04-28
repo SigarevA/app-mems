@@ -7,21 +7,21 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.DialogFragment
 import ru.samsung.itshool.memandos.R
 
-class DialogFragment : DialogFragment()  {
+class DialogFragment : DialogFragment() {
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        return activity?.let{
+        return activity?.let {
             val builder = AlertDialog.Builder(it)
             builder
                 .setTitle("Загрузка картинки!")
                 .setMessage("Выберите ресур")
-                .setPositiveButton("Галерея") {
-                        dialog, id ->  dialog.cancel()
+                .setPositiveButton("Галерея") { dialog, id ->
+                    dialog.cancel()
                 }
-                .setNegativeButton("Камера") {
-                        dialog, i ->  dialog.cancel()
+                .setNegativeButton("Камера") { dialog, i ->
+                    dialog.cancel()
                 }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
