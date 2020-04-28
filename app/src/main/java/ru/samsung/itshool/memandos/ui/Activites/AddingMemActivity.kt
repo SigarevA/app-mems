@@ -67,15 +67,12 @@ class AddingMemActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (p0.toString().trim().length != 0 && !createBtn.isEnabled)
+                if (p0.toString().trim().isNotEmpty() && !createBtn.isEnabled)
                     createBtn.isEnabled = true
-                if (p0.toString().trim().length == 0 && createBtn.isEnabled)
+                if (p0.toString().trim().isEmpty() && createBtn.isEnabled)
                     createBtn.isEnabled = false
-
-                Log.d(TAG, String.format("changeText , p1 : %d, p2 : %d, p3 : %d ; $p0", p1, p2, p3))
             }
         })
-
 
         imgMemBtn.setOnClickListener(this::handleClickBtn)
 

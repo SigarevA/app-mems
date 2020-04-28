@@ -10,12 +10,9 @@ import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
 
 import ru.samsung.itshool.memandos.APP_PREFERENCES
-import ru.samsung.itshool.memandos.NAME
 import ru.samsung.itshool.memandos.R
-import ru.samsung.itshool.memandos.ui.Fragments.AddingMemeFragment
 import ru.samsung.itshool.memandos.ui.Fragments.ProfileFragment
 import ru.samsung.itshool.memandos.ui.Fragments.RibbonFragment
 
@@ -26,17 +23,12 @@ class TapeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tape)
-
+        
         init()
-
-
-        val mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-
     }
 
 
     private fun init() {
-
         val navigation: BottomNavigationView = findViewById(R.id.navigation_main)
         navigation.setOnNavigationItemSelectedListener(::onNavigationItemSelected)
         loadFragment(RibbonFragment())

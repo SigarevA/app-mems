@@ -17,8 +17,6 @@ interface MemDao {
     @Query("SELECT * FROM memes WHERE mem_id IN (:userIds)")
     fun loadAllByIds(userIds: Long): Flowable<List<Mem>>
 
-
-
     @Insert
     fun insert(mem: Mem) : Single<Long>
 

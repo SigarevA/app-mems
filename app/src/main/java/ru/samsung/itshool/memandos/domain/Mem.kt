@@ -10,9 +10,9 @@ data class Mem(
     @ColumnInfo(name = "mem_id")
     val id : Long = 0,
     @ColumnInfo(name = "mem_title")
-    val title : String = "mem",
+    val title : String = "",
     @ColumnInfo(name = "mem_description")
-    val description : String = "null mem",
+    val description : String = "",
     @ColumnInfo(name = "mem_isFavorite" )
     val isFavorite : Boolean = false,
     @ColumnInfo(name = "mem_createdDate")

@@ -14,10 +14,10 @@ class UserInfoResponse(
     override fun convert(): UserInfo {
         return UserInfo(
             id ?: 2,
-            username ?: "Work",
-            firstName ?: "First",
-            lastName ?: "Last",
-            userDescription ?: "Description"
+            username ?: "",
+            firstName ?: "",
+            lastName ?: "",
+            userDescription ?: ""
         )
     }
 }
