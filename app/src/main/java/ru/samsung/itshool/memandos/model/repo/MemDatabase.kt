@@ -25,6 +25,5 @@ abstract class MemDatabase : RoomDatabase() {
                 context,
                 MemDatabase::class.java, "database-name"
             ).build()
-
     }
 }

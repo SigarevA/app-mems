@@ -23,6 +23,14 @@ class SharedPreferencesUtli {
             editor.putString(key,value)
             editor.apply()
         }
+
+
+        fun insertData(context : Context, key  : String , value : Int) {
+            val editor = getPrefs(context).edit()
+            editor.putInt(key,value)
+            editor.apply()
+        }
+
     }
 
 }

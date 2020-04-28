@@ -1,40 +1,17 @@
 package ru.samsung.itshool.memandos.model.repo
 
-import android.util.Log
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import ru.samsung.itshool.memandos.model.response.AuthRequest
-import ru.samsung.itshool.memandos.model.api.AndroidSchoolAPI
-import ru.samsung.itshool.memandos.model.response.ArrayMemsResponse
-import ru.samsung.itshool.memandos.model.response.AuthResponse
+import ru.samsung.itshool.memandos.model.api.AndroidSchoolMemesAPI
 import ru.samsung.itshool.memandos.model.response.MemResponse
 
 
+private const val TAG : String = "SurfMemesRepo"
+
 class SurfMemesRepo {
 
-    private val TAG : String = SurfMemesRepo::class.java.name
+    private val memesAPI = NetworkService.retrofit.create(AndroidSchoolMemesAPI::class.java)
 
-
-    private val androidSchoolAPI = NetworkService.retrofit.create(AndroidSchoolAPI::class.java)
-
-
-    fun authorize ( requestLogin: AuthRequest) : Observable<AuthResponse> {
-
-        Log.d(TAG, "method authorize")
-
-        return androidSchoolAPI
-                    .authorizate(requestLogin)
+    fun loadMemes() : Observable<Collection<MemResponse>> {
+        return memesAPI.getMems()
     }
-
-    fun load() : Observable<Collection<MemResponse>> {
-        return androidSchoolAPI.getMems()
-    }
-
-
-    fun logout() : Completable {
-        return androidSchoolAPI
-            .logout()
-    }
-
-
 }

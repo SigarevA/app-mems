@@ -20,6 +20,12 @@ class SnackBarsUtil {
             mSnackBar.show()
         }
 
+        fun successSnackBar(text: String, v : View ) {
+            val mSnackBar =  Snackbar.make(v, text, Snackbar.LENGTH_SHORT)
+            mSnackBar.setBackgroundTint(Color.parseColor("#98FB98"))
+            mSnackBar.setTextColor(Color.parseColor("#3CB371"))
+            mSnackBar.show()
+        }
     }
 
 }

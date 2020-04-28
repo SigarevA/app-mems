@@ -9,43 +9,41 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_adding_mem"
+        style="@style/Toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/Toolbar"
-        app:title="Создать свой мем"/>
+        app:title="Создать свой мем" />
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/head_mem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:counterMaxLength="140"
-
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-
-        app:layout_constraintTop_toBottomOf="@id/toolbar_adding_mem"
-        app:layout_constraintBottom_toTopOf="@id/text_mem"
-
-        app:hintEnabled="false"
         app:counterEnabled="true"
-        >
+
+        app:counterMaxLength="140"
+        app:hintEnabled="false"
+
+        app:layout_constraintBottom_toTopOf="@id/text_mem"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_adding_mem">
 
         <EditText
             android:id="@+id/head_mem_text"
-            app:layout_constraintTop_toBottomOf="@id/head_mem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="#c9c5c5"
-            android:textColor="#ffffffff"
-            android:maxLength="140"
             android:background="@color/colorSurf"
-            android:textSize="24sp"
             android:hint="@string/heading"
-            />
+            android:maxLength="140"
+            android:textColor="#ffffffff"
+            android:textColorHint="#c9c5c5"
+            android:textSize="24sp"
+            app:layout_constraintTop_toBottomOf="@id/head_mem" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -54,30 +52,28 @@
         android:id="@+id/text_mem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:counterMaxLength="1000"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@id/head_mem"
-        app:layout_constraintBottom_toTopOf="@id/representation_mem"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:hintEnabled="false"
         app:counterEnabled="true"
-        >
+        app:counterMaxLength="1000"
+        app:hintEnabled="false"
+        app:layout_constraintBottom_toTopOf="@id/representation_mem"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/head_mem">
 
         <EditText
             android:id="@+id/description_mem_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="#c9c5c5"
-            android:textColor="#ffffffff"
-            android:maxLength="1000"
             android:background="@color/colorSurf"
-            android:textSize="16sp"
             android:hint="@string/text"
-            />
+            android:maxLength="1000"
+            android:textColor="#ffffffff"
+            android:textColorHint="#c9c5c5"
+            android:textSize="16sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,20 +81,18 @@
         android:id="@+id/representation_mem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/text_mem"
         android:layout_marginTop="16dp"
-        />
+        app:layout_constraintTop_toBottomOf="@id/text_mem" />
 
     <ImageButton
         android:id="@+id/btn_adding_img_mem"
-        android:background="@drawable/rounded"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/rounded"
         android:padding="8dp"
         android:src="@drawable/ic_adding_img"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

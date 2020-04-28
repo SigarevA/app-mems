@@ -8,19 +8,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_ribbon.*
 import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.domain.Mem
-import ru.samsung.itshool.memandos.ui.Activites.DetailMemActivity
 
-class MemsAdapter(val mems : Array<Mem>,
-                  val listener : AdapterInteractionListener)
-    : RecyclerView.Adapter<MemsAdapter.ViewHolder>()
-{
+class MemsAdapter(
+    val mems: Array<Mem>,
+    val listener: AdapterInteractionListener
+) : RecyclerView.Adapter<MemsAdapter.ViewHolder>() {
 
-    class ViewHolder(v : View) : RecyclerView.ViewHolder(v) {
-        val MemTitle : TextView
-        val imgMem : ImageView
+    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+        val MemTitle: TextView
+        val imgMem: ImageView
 
         init {
             MemTitle = v.findViewById(R.id.title_mem)
@@ -51,7 +49,7 @@ class MemsAdapter(val mems : Array<Mem>,
 
     @FunctionalInterface
     interface AdapterInteractionListener {
-        fun onItemClick(mem : Mem )
+        fun onItemClick(mem: Mem)
     }
 
     override fun getItemCount() = mems.size

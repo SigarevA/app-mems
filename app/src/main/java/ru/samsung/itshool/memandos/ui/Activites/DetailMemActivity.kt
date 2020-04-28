@@ -1,5 +1,6 @@
 package ru.samsung.itshool.memandos.ui.Activites
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -17,30 +18,46 @@ import ru.samsung.itshool.memandos.domain.Mem
 import java.time.LocalDate
 import java.util.*
 
+private const val TAG = "DetailMemActivity"
+
+private const val MEM_ID = "memID"
+private const val MEM_TITLE = "mem_title"
+private const val MEM_DESCRIPTION = "MEM_DESCRIPTION"
+private const val MEM_FAVORITE = "MEM_FAVORITE"
+private const val MEM_DATE_CREATED = "createdDate"
+private const val MEM_PHOTO_URL = "photoUrl"
+
 class DetailMemActivity : AppCompatActivity() {
 
-    private lateinit var title : TextView
-    private lateinit var imageMem : ImageView
-    private lateinit var toolbar : Toolbar
-    private lateinit var memDescription : TextView
+    private lateinit var title: TextView
+    private lateinit var imageMem: ImageView
+    private lateinit var toolbar: Toolbar
+    private lateinit var memDescription: TextView
     private lateinit var dateTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_mem)
 
-        val intent = getIntent()
+        initView()
 
+        fillViews()
+    }
+
+    private fun initView() {
         toolbar = findViewById(R.id.main_toolbar)
+        title = findViewById(R.id.detail_title_mem)
+        imageMem = findViewById(R.id.detail_img_mem)
+        memDescription = findViewById(R.id.mem_description)
+        dateTextView = findViewById(R.id.date_created_mem)
+    }
+
+    private fun fillViews() {
+        val intent = getIntent()
         setSupportActionBar(toolbar)
 
-        intent.getStringExtra("name")
-        intent.getLongExtra(MEM_ID, 0)
-
-        title = findViewById<TextView>(R.id.detail_title_mem)
         title.text = intent.getStringExtra(MEM_TITLE)
-
-        imageMem = findViewById<ImageView>(R.id.detail_img_mem)
+        memDescription.text = intent.getStringExtra(MEM_DESCRIPTION)
 
         val photUrl = intent.getStringExtra(MEM_PHOTO_URL)
 
@@ -49,20 +66,17 @@ class DetailMemActivity : AppCompatActivity() {
             .load(photUrl)
             .into(imageMem)
 
+        dateTextView.text = "${calculateDate()} дней назад"
+    }
 
-        memDescription = findViewById(R.id.mem_description)
-        memDescription.text = intent.getStringExtra(MEM_DESCRIPTION)
-
-        dateTextView = findViewById(R.id.date_created_mem)
-
+    private fun calculateDate(): Long {
         val date = intent.getLongExtra(MEM_DATE_CREATED, 0) * 1000
         Log.d(TAG, "date : $date")
         val now = Date()
 
         val day = (now.time - date) / (1000 * 60 * 60 * 24)
 
-
-        dateTextView.text = "$day дней назад"
+        return day
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -72,20 +86,9 @@ class DetailMemActivity : AppCompatActivity() {
 
     companion object {
 
+        fun getIntent(context: Context, mem: Mem): Intent {
 
-        const val TAG = "DetailMemActivity"
-
-        const val MEM_ID = "memID"
-        const val MEM_TITLE = "mem_title"
-        const val MEM_DESCRIPTION = "MEM_DESCRIPTION"
-        const val MEM_FAVORITE = "MEM_FAVORITE"
-        const val MEM_DATE_CREATED = "createdDate"
-        const val MEM_PHOTO_URL = "photoUrl"
-
-
-        fun getIntent(context: Context ,mem : Mem) : Intent{
-
-            val intent =  Intent(context, DetailMemActivity::class.java)
+            val intent = Intent(context, DetailMemActivity::class.java)
             intent.putExtra(MEM_ID, mem.id)
             intent.putExtra(MEM_TITLE, mem.title)
             intent.putExtra(MEM_DESCRIPTION, mem.description)
