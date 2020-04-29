@@ -18,7 +18,7 @@ interface MemDao {
     fun loadAllByIds(userIds: Long): Flowable<List<Mem>>
 
     @Insert
-    fun insert(mem: Mem) : Single<Long>
+    fun insert(mem: Mem): Single<Long>
 
     @Delete
     fun delete(mem: Mem)

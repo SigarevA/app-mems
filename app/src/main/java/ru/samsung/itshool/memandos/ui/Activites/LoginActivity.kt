@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -11,23 +12,19 @@ import android.widget.EditText
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import kotlinx.android.synthetic.main.activity_login.*
 import studio.carbonylgroup.textfieldboxes.TextFieldBoxes
 import ru.samsung.itshool.memandos.*
 import ru.samsung.itshool.memandos.ui.VM.LoginVM
 import ru.samsung.itshool.memandos.utils.SnackBarsUtil
 
-private val QUANTITY : Int = 5
+private val QUANTITY: Int = 5
 
 class LoginActivity : AppCompatActivity() {
 
-    private val TAG : String = LoginActivity::class.java.name
+    private val TAG: String = LoginActivity::class.java.name
 
     private lateinit var loginVM: LoginVM
-    private lateinit var btnLogin : AppCompatButton
-    private lateinit var passwordEditText : EditText
-    private lateinit var loginEditText : EditText
-    private lateinit var text_boxes_Password : TextFieldBoxes
-    private lateinit var text_boxes_Login : TextFieldBoxes
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,45 +34,43 @@ class LoginActivity : AppCompatActivity() {
         loginVM = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
             .create(LoginVM::class.java)
 
-        Log.d(TAG, "Create activity Login")
 
+        Log.d(TAG, "Create activity Login")
         initView()
 
         initListener()
     }
 
 
-    private fun initView(){
-        text_boxes_Password = findViewById<TextFieldBoxes>(R.id.text_field_boxes_password)
-            .also {
-                it.setHelperText(String.format("Пароль должен содержать %d символов", QUANTITY ) )
-                it.maxCharacters = QUANTITY
-            }
-        text_boxes_Login = findViewById(R.id.text_field_boxes_login)
-        btnLogin = findViewById(R.id.Loginbtn)
-        passwordEditText = findViewById(R.id.login_value)
-        loginEditText = findViewById(R.id.password_value)
+    private fun initView() {
+        with(textBoxesPassword) {
+                setHelperText(String.format("Пароль должен содержать %d символов", QUANTITY))
+                maxCharacters = QUANTITY
+        }
     }
 
     private fun initListener() {
 
-        btnLogin.setOnClickListener {
-            val emptyPassword = passwordEditText.text.toString().trim().equals("")
-            val emptyLogin = loginEditText.text.toString().trim().equals("")
+        loginBtn.setOnClickListener {
+            val emptyPassword = passwordValue.text.toString().trim().equals("")
+            val emptyLogin = loginValue.text.toString().trim().equals("")
             if (emptyPassword)
-                findViewById<TextFieldBoxes>(R.id.text_field_boxes_password).setError(
-                    "Поле не может быть пустым",
+                textBoxesPassword.setError(
+                    getString(R.string.null_text_boxes),
                     false
                 )
             if (emptyLogin)
-                findViewById<TextFieldBoxes>(R.id.text_field_boxes_login).setError(
-                    "Поле не может быть пустым!",
+                textBoxesLogin.setError(
+                    getString(R.string.null_text_boxes),
                     true
                 )
             if (!emptyLogin && !emptyPassword) {
-                loginVM.autheraziton(loginEditText.text.toString(),passwordEditText.text.toString() )
+                loginVM.autheraziton(
+                    loginValue.text.toString(),
+                    passwordValue.text.toString()
+                )
                     .observe(this, Observer {
-                        when{
+                        when {
                             it.isSuccess -> {
                                 successAuthorize()
                             }
@@ -84,16 +79,13 @@ class LoginActivity : AppCompatActivity() {
                             }
                         }
                     }
-                )
+                    )
             }
         }
     }
 
-
-
-
-    private fun errorAuthorize(view : View) {
-        SnackBarsUtil.errorSnackBar("Вы ввели неверные данные.\nПопробуйте еще раз.", view)
+    private fun errorAuthorize(view: View) {
+        SnackBarsUtil.errorSnackBar(getString(R.string.invalid_auth), view)
     }
 
     @SuppressLint("CommitPrefEdits")

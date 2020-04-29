@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="@id/line_3">
 
         <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
-            android:id="@+id/text_field_boxes_login"
+            android:id="@+id/textBoxesLogin"
             style="@style/floating_la"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
             app:labelText="Логин">
 
             <studio.carbonylgroup.textfieldboxes.ExtendedEditText
-                android:id="@+id/login_value"
+                android:id="@+id/loginValue"
                 style="@style/input_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
         </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
 
         <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
-            android:id="@+id/text_field_boxes_password"
+            android:id="@+id/textBoxesPassword"
             style="@style/floating_la"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,10 +58,10 @@
             android:paddingRight="16dp"
             android:paddingBottom="8dp"
             app:labelText="Пароль"
-            app:layout_constraintTop_toBottomOf="@id/text_field_boxes_login">
+            app:layout_constraintTop_toBottomOf="@id/textBoxesLogin">
 
             <studio.carbonylgroup.textfieldboxes.ExtendedEditText
-                android:id="@+id/password_value"
+                android:id="@+id/passwordValue"
                 style="@style/input_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -93,7 +93,7 @@
         app:layout_constraintGuide_begin="16dp" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/Loginbtn"
+        android:id="@+id/loginBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#1EF0D7"

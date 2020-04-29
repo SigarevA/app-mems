@@ -14,4 +14,6 @@
     <string name="text">Текс</string>
     <string name="create">Создать</string>
     <string name="Logout">Выйти</string>
+    <string name="null_text_boxes">Поле не может быть пустым!</string>
+    <string name="invalid_auth">Вы ввели неверные данные. Попробуйте еще раз.</string>
 </resources>

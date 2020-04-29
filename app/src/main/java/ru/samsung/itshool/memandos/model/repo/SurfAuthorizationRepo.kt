@@ -13,17 +13,14 @@ class SurfAuthorizationRepo {
 
     private val authApi = NetworkService.retrofit.create(AndroidSchoolAuthAPI::class.java)
 
-    fun authorize ( requestLogin: AuthRequest) : Observable<AuthResponse> {
+    fun authorize(requestLogin: AuthRequest): Observable<AuthResponse> {
 
         Log.d(TAG, "method authorize")
 
-        return authApi
-            .authorizate(requestLogin)
+        return authApi.authorizate(requestLogin)
     }
 
-
-    fun logout() : Completable {
-        return authApi
-            .logout()
+    fun logout(): Completable {
+        return authApi.logout()
     }
 }
