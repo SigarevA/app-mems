@@ -8,7 +8,6 @@ import ru.samsung.itshool.memandos.model.response.AuthRequest
 import ru.samsung.itshool.memandos.model.response.AuthResponse
 
 interface AndroidSchoolAuthAPI {
-
     @POST("auth/login")
     fun authorizate(@Body data : AuthRequest) : Observable<AuthResponse>
 

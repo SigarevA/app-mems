@@ -1,5 +1,6 @@
 package ru.samsung.itshool.memandos.ui.adapters
 
+import android.graphics.Bitmap
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.request.RequestOptions
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.domain.Mem
 
@@ -34,18 +38,25 @@ class MemsAdapter(
         return ViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.d(TAG, "binding view")
         holder.MemTitle.text = mems[position].title
         Glide.with(holder.itemView)
             .load(mems[position].photoUrl)
+            /*.apply(
+                RequestOptions.bitmapTransform(
+                    RoundedCornersTransformation(
+                        64,
+                        0,
+                        RoundedCornersTransformation.CornerType.TOP
+                    )
+                )
+            )*/
             .into(holder.imgMem)
         holder.imgMem.setOnClickListener {
             listener.onItemClick(mems[position])
         }
     }
-
 
     @FunctionalInterface
     interface AdapterInteractionListener {

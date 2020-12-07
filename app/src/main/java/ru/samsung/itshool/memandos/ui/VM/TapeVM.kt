@@ -5,12 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.samsung.itshool.memandos.model.repo.SurfAuthorizationRepo
+import javax.inject.Inject
 
 private const val TAG = "TapeVM"
 
 class TapeVM : ViewModel() {
 
-    private val authRepo = SurfAuthorizationRepo()
+    @Inject
+    lateinit var authRepo: SurfAuthorizationRepo
 
     fun logout(): LiveData<Result<Unit>> {
 
@@ -28,5 +30,4 @@ class TapeVM : ViewModel() {
                 })
         return resp
     }
-
 }

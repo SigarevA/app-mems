@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.samsung.itshool.memandos.R
+import ru.samsung.itshool.memandos.di.ComponentHolder
 import ru.samsung.itshool.memandos.ui.Fragments.LogoutDialogFragment
 import ru.samsung.itshool.memandos.ui.Fragments.ProfileFragment
 import ru.samsung.itshool.memandos.ui.Fragments.RibbonFragment
@@ -41,6 +42,7 @@ class TapeActivity : AppCompatActivity(), LogoutDialogFragment.NoticeDialogListe
                 RIBBON_FRAGMENT
 
         tapeVM = ViewModelProvider(this).get(TapeVM::class.java)
+        ComponentHolder.appComponent.inject(tapeVM)
 
         init()
     }

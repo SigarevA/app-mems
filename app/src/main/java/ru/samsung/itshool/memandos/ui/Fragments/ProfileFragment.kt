@@ -15,13 +15,12 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import ru.samsung.itshool.memandos.NAME
 import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.USER_DESCRIPTION
+import ru.samsung.itshool.memandos.di.ComponentHolder
 import ru.samsung.itshool.memandos.domain.Mem
 import ru.samsung.itshool.memandos.ui.Activites.DetailMemActivity
-import ru.samsung.itshool.memandos.ui.Activites.LoginActivity
 import ru.samsung.itshool.memandos.ui.VM.ProfileVM
 import ru.samsung.itshool.memandos.ui.adapters.MemsAdapter
 import ru.samsung.itshool.memandos.utils.SharedPreferencesUtli
-import ru.samsung.itshool.memandos.utils.SnackBarsUtil
 import ru.samsung.itshool.memandos.ui.InfoUserView
 
 private const val TAG = "ProfileFragment"
@@ -44,6 +43,7 @@ class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
         setHasOptionsMenu(true)
 
         profileVM = ViewModelProvider(this).get(ProfileVM::class.java)
+        ComponentHolder.appComponent.inject(profileVM)
     }
 
     override fun onCreateView(
@@ -51,12 +51,9 @@ class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_profile, container, false)
-
         initView(v)
         initListener(v)
-
         fillView()
-
         return v
     }
 

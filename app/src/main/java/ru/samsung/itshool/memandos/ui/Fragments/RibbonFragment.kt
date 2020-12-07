@@ -3,23 +3,23 @@ package ru.samsung.itshool.memandos.ui.Fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.samsung.itshool.memandos.R
+import ru.samsung.itshool.memandos.di.ComponentHolder
 import ru.samsung.itshool.memandos.domain.Mem
 import ru.samsung.itshool.memandos.ui.Activites.DetailMemActivity
 import ru.samsung.itshool.memandos.ui.VM.RobbionVM
 import ru.samsung.itshool.memandos.ui.adapters.MemsAdapter
 import ru.samsung.itshool.memandos.utils.SnackBarsUtil
-
 import java.util.*
 
 private const val TAG = "RibbonFragment"
@@ -46,19 +46,16 @@ class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
 
         setHasOptionsMenu(true)
         robbionVM = ViewModelProvider(this).get(RobbionVM::class.java)
+        ComponentHolder.appComponent.inject(robbionVM)
     }
 
-
     fun bindingView(v: View) {
-
         ribbonToolbar = v.findViewById(R.id.main_toolbar)
 
         with((activity as AppCompatActivity)) {
             this.setSupportActionBar(ribbonToolbar)
         }
-
         swipeContainer = v.findViewById(R.id.swipeContainer)
-
         swipeContainer.setOnRefreshListener {
             robbionVM.refreshMemes().observe(viewLifecycleOwner, Observer { diffResult ->
                 when {
@@ -75,7 +72,6 @@ class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
         }
 
         staggeredGridLayoutManager = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
-
         textFailure = v.findViewById(R.id.text_failure)
         progressBar = v.findViewById(R.id.progressBar)
         recyclerView = v.findViewById(R.id.recycler_view_mems)
@@ -95,7 +91,6 @@ class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
             }
         })
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -6,10 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorSurf"
-    android:theme="@style/AppTheme"
-    tools:ignore="ExtraText">
+    tools:ignore="ExtraText"
     android:theme="@style/Theme.AppCompat.NoActionBar"
-    tools:context=".LoginActivity">
+    tools:context=".ui.Activites.LoginActivity">
 
 
     <androidx.constraintlayout.widget.Guideline

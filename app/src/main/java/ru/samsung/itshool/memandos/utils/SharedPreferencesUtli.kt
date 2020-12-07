@@ -6,7 +6,6 @@ import ru.samsung.itshool.memandos.APP_PREFERENCES
 
 class SharedPreferencesUtli {
 
-
     companion object {
 
         fun getPrefs(context: Context) : SharedPreferences {

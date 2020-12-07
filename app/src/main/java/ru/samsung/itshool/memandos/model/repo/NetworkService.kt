@@ -7,12 +7,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.samsung.itshool.memandos.model.BASE_URL
 
-
 object NetworkService {
 
     val retrofit by lazy {
         val logging =  HttpLoggingInterceptor()
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY  )
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY )
 
         val client: OkHttpClient = OkHttpClient.Builder()
             .addInterceptor(logging)

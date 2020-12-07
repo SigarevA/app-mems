@@ -1,22 +1,20 @@
 package ru.samsung.itshool.memandos.model.repo
 
-import android.util.Log
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import ru.samsung.itshool.memandos.model.api.AndroidSchoolAuthAPI
 import ru.samsung.itshool.memandos.model.response.AuthRequest
 import ru.samsung.itshool.memandos.model.response.AuthResponse
+import javax.inject.Inject
+import javax.inject.Singleton
 
-private const val TAG = "SurfAuthorizationRepo"
+@Singleton
+class SurfAuthorizationRepo @Inject constructor() {
 
-class SurfAuthorizationRepo {
-
-    private val authApi = NetworkService.retrofit.create(AndroidSchoolAuthAPI::class.java)
+    @Inject
+    lateinit var authApi: AndroidSchoolAuthAPI
 
     fun authorize(requestLogin: AuthRequest): Observable<AuthResponse> {
-
-        Log.d(TAG, "method authorize")
-
         return authApi.authorizate(requestLogin)
     }
 

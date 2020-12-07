@@ -10,16 +10,16 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.samsung.itshool.memandos.model.response.AuthRequest
 import ru.samsung.itshool.memandos.model.repo.SurfAuthorizationRepo
 import ru.samsung.itshool.memandos.storage.UserStorageSharedPref
+import javax.inject.Inject
 
 
 class LoginVM(application: Application) : AndroidViewModel(application) {
 
-    private val surfAuthRepo = SurfAuthorizationRepo()
-
+    @Inject
+    lateinit var surfAuthRepo : SurfAuthorizationRepo
     private val TAG : String = LoginVM::class.java.name
 
     fun autheraziton(login : String, password : String ) : LiveData<Result<Unit>> {
-
         Log.d(TAG, "autheraziton")
 
         val authLiveData = MutableLiveData<Result<Unit>>()

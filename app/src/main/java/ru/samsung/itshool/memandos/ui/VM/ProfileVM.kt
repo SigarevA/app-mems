@@ -1,6 +1,5 @@
 package ru.samsung.itshool.memandos.ui.VM
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -10,19 +9,22 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.samsung.itshool.memandos.domain.Mem
 import ru.samsung.itshool.memandos.model.repo.MemDatabase
-import ru.samsung.itshool.memandos.model.repo.NetworkService
 import ru.samsung.itshool.memandos.model.repo.SurfMemesRepo
+import javax.inject.Inject
 
 class ProfileVM : ViewModel() {
 
-    private val surfMemesRepo: SurfMemesRepo = SurfMemesRepo()
+    @Inject
+    lateinit var surfMemesRepo: SurfMemesRepo
+
+    @Inject
+    lateinit var memDatabase: MemDatabase
 
     fun getMyMemes(context: Context): LiveData<List<Mem>> {
 
         val memesLiveData = MutableLiveData<List<Mem>>()
 
-        val mDataBase = MemDatabase.getInstance(context)
-        mDataBase.memDao().getAll()
+        memDatabase.memDao().getAll()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -33,7 +35,6 @@ class ProfileVM : ViewModel() {
                     Log.d(TAG, it.message)
                 }
             )
-
         return memesLiveData
     }
 

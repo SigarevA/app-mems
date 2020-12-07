@@ -27,5 +27,4 @@ class SnackBarsUtil {
             mSnackBar.show()
         }
     }
-
 }

@@ -2,7 +2,6 @@ package ru.samsung.itshool.memandos.ui.Activites
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,11 +9,15 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import ru.samsung.itshool.memandos.R
+import ru.samsung.itshool.memandos.di.ComponentHolder
 import ru.samsung.itshool.memandos.domain.Mem
 import ru.samsung.itshool.memandos.ui.Fragments.DialogFragment
 import ru.samsung.itshool.memandos.ui.VM.AddingMemVM
@@ -23,7 +26,7 @@ import java.util.*
 private const val TAG = "AddingMemActivity"
 private const val SUCCESS_ADDING = "SUCCESS"
 private const val photoURL =
-    "https://i.ibb.co/7jyvKdP/c3a403eaf82be4ac51ed8c632c3089c5-f24d80acb4ee32776f2667ff8d6452cb2ca88fa8.jpg"
+    "https://i.ibb.co/Tt9N3Xc/prikoli-15.jpg"
 
 class AddingMemActivity : AppCompatActivity() {
 
@@ -42,6 +45,7 @@ class AddingMemActivity : AppCompatActivity() {
 
         addingMemVM = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
             .create(AddingMemVM::class.java)
+        ComponentHolder.appComponent.inject(addingMemVM)
 
         initView()
         initListener()
@@ -78,24 +82,24 @@ class AddingMemActivity : AppCompatActivity() {
                 }
             }
         })
-
+        Log.d(TAG, "init listener")
         imgMemBtn.setOnClickListener(this::handleClickBtn)
-
         setSupportActionBar(toolbar)
     }
 
 
     override fun onCreatePanelMenu(featureId: Int, menu: Menu): Boolean {
         menuInflater.inflate(R.menu.adding_mem_menu, menu)
-
+        Log.d(TAG, "method cteate panel menu")
         createBtn = menu.findItem(R.id.create_mem_btn)
         createBtn?.isEnabled = false
-
+        Log.d(TAG, "init listener")
         return true
     }
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.d(TAG, "Click button in menu")
         when (item.itemId) {
             R.id.create_mem_btn -> {
                 Log.d(TAG, "Click button in menu")
@@ -134,5 +138,4 @@ class AddingMemActivity : AppCompatActivity() {
     companion object {
         fun getResult(data: Intent): Boolean = data.getBooleanExtra(SUCCESS_ADDING, false)
     }
-
 }

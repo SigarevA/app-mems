@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
         android:id="@+id/titleMemTextView"
         style="@style/detailTitle"

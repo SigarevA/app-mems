@@ -2,19 +2,15 @@ package ru.samsung.itshool.memandos.ui.Activites
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.util.Log
 import android.view.View
 import android.view.Window
-import android.widget.EditText
-import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_login.*
-import studio.carbonylgroup.textfieldboxes.TextFieldBoxes
-import ru.samsung.itshool.memandos.*
+import ru.samsung.itshool.memandos.R
+import ru.samsung.itshool.memandos.di.ComponentHolder
 import ru.samsung.itshool.memandos.ui.VM.LoginVM
 import ru.samsung.itshool.memandos.utils.SnackBarsUtil
 
@@ -33,19 +29,16 @@ class LoginActivity : AppCompatActivity() {
         getSupportActionBar()?.hide()
         loginVM = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
             .create(LoginVM::class.java)
-
-
-        Log.d(TAG, "Create activity Login")
+        ComponentHolder.appComponent.inject(loginVM)
         initView()
-
         initListener()
     }
 
 
     private fun initView() {
         with(textBoxesPassword) {
-                setHelperText(String.format("Пароль должен содержать %d символов", QUANTITY))
-                maxCharacters = QUANTITY
+            helperText = String.format("Пароль должен содержать %d символов", QUANTITY)
+            maxCharacters = QUANTITY
         }
     }
 
@@ -94,4 +87,3 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
     }
 }
-
