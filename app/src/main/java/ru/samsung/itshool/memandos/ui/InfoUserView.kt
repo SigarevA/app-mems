@@ -16,7 +16,7 @@ import ru.samsung.itshool.memandos.R
 private const val TAG = "InfoUserView"
 
 class InfoUserView @JvmOverloads constructor(context: Context?, attrs: AttributeSet?) :
-    ImageView(context, attrs) {
+    androidx.appcompat.widget.AppCompatImageView(context, attrs) {
 
     private val dp: Float
     private lateinit var toolbar: Toolbar

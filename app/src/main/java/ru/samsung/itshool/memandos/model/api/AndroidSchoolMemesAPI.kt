@@ -1,6 +1,6 @@
 package ru.samsung.itshool.memandos.model.api
 
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.Observable
 import retrofit2.http.GET
 import ru.samsung.itshool.memandos.model.response.MemResponse
 

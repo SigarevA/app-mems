@@ -5,9 +5,7 @@ import android.content.SharedPreferences
 import ru.samsung.itshool.memandos.APP_PREFERENCES
 
 class SharedPreferencesUtli {
-
     companion object {
-
         fun getPrefs(context: Context) : SharedPreferences {
             return context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         }
@@ -23,13 +21,10 @@ class SharedPreferencesUtli {
             editor.apply()
         }
 
-
         fun insertData(context : Context, key  : String , value : Int) {
             val editor = getPrefs(context).edit()
             editor.putInt(key,value)
             editor.apply()
         }
-
     }
-
 }

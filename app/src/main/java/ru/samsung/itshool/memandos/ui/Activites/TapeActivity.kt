@@ -2,79 +2,88 @@ package ru.samsung.itshool.memandos.ui.Activites
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.samsung.itshool.memandos.R
+import ru.samsung.itshool.memandos.databinding.ActivityTapeBinding
 import ru.samsung.itshool.memandos.di.ComponentHolder
 import ru.samsung.itshool.memandos.ui.Fragments.LogoutDialogFragment
-import ru.samsung.itshool.memandos.ui.Fragments.ProfileFragment
-import ru.samsung.itshool.memandos.ui.Fragments.RibbonFragment
+import ru.samsung.itshool.memandos.ui.Fragments.TabContainerFragment
+import ru.samsung.itshool.memandos.ui.Screens.Tab
 import ru.samsung.itshool.memandos.ui.VM.TapeVM
+import ru.samsung.itshool.memandos.ui.common.BackButtonListener
 import ru.samsung.itshool.memandos.utils.SnackBarsUtil
-
-
 
 private const val TAG = "TapeActivity"
 private const val PROFILE_FRAGMENT = "profileFragment"
 private const val RIBBON_FRAGMENT = "robbionFragment"
 private const val CURRENT_FRAGMENT = "current"
 
-class TapeActivity : AppCompatActivity(), LogoutDialogFragment.NoticeDialogListener  {
+class TapeActivity : AppCompatActivity(), LogoutDialogFragment.NoticeDialogListener {
 
     private lateinit var containerFragment: FrameLayout
     private lateinit var tapeVM: TapeVM
-    private lateinit var state : String
+    private lateinit var state: String
+
+    private val binding by viewBinding(ActivityTapeBinding::bind, R.id.tape_container)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tape)
-
-        state = if (savedInstanceState != null)
-            savedInstanceState.getString(CURRENT_FRAGMENT, "")
-            else
-                RIBBON_FRAGMENT
-
         tapeVM = ViewModelProvider(this).get(TapeVM::class.java)
         ComponentHolder.appComponent.inject(tapeVM)
-
-        init()
-    }
-
-    private fun init() {
-        containerFragment = findViewById(R.id.container)
-        val navigation: BottomNavigationView = findViewById(R.id.navigation_main)
-        navigation.setOnNavigationItemSelectedListener(::onNavigationItemSelected)
-        when (state) {
-            PROFILE_FRAGMENT -> loadFragment(ProfileFragment(), PROFILE_FRAGMENT)
-            RIBBON_FRAGMENT -> loadFragment(RibbonFragment(), RIBBON_FRAGMENT)
-        }
-    }
-
-
-    fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.dashboard -> {
-                loadFragment(RibbonFragment(), RIBBON_FRAGMENT)
-                return true
-            }
-            R.id.item_adding_mem -> {
-                val intent = Intent(this, AddingMemActivity::class.java)
-                startActivityForResult(intent, 1)
-                return false
-            }
-            R.id.item_profile -> {
-                loadFragment(ProfileFragment(), PROFILE_FRAGMENT)
-                return true
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.add(
+            R.id.main_container,
+            TabContainerFragment.newInstance("TAPE"),
+            "TAPE"
+        )
+        transaction.commitNow()
+        binding.navigationMain.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.tape -> { selectTab("TAPE")
+                    true
+                }
+                R.id.profile -> { selectTab("PROFILE")
+                    true
+                }
+                else -> false
             }
         }
-        return false
+    }
+
+    private fun selectTab(tab : String) {
+        val fm = supportFragmentManager
+        var currentFragment: Fragment? = null
+        val fragments = fm.fragments
+        for (f in fragments) {
+            if (f.isVisible) {
+                currentFragment = f
+                break
+            }
+        }
+        val newFragment = fm.findFragmentByTag(tab)
+        if (currentFragment != null && newFragment != null && currentFragment === newFragment) return
+        val transaction = fm.beginTransaction()
+        if (newFragment == null) {
+            transaction.add(
+                R.id.main_container,
+                Tab(tab).createFragment(fm.fragmentFactory), tab
+            )
+        }
+        if (currentFragment != null) {
+            transaction.hide(currentFragment)
+        }
+        if (newFragment != null) {
+            transaction.show(newFragment)
+        }
+        transaction.commitNow()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -94,22 +103,6 @@ class TapeActivity : AppCompatActivity(), LogoutDialogFragment.NoticeDialogListe
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-
-        outState.run{
-            Log.d(TAG, "save, state : ${state}")
-            putString(CURRENT_FRAGMENT, state)
-        }
-        super.onSaveInstanceState(outState)
-    }
-
-    fun loadFragment(fragment: Fragment, tagFragment: String) {
-        val ft = supportFragmentManager.beginTransaction()
-        state = tagFragment
-        ft.replace(R.id.container, fragment, tagFragment)
-        ft.commit()
-    }
-
     override fun onDialogPositiveClick() {
         tapeVM.logout().observe(this, Observer {
             when {
@@ -124,5 +117,33 @@ class TapeActivity : AppCompatActivity(), LogoutDialogFragment.NoticeDialogListe
                 }
             }
         })
+    }
+
+    /**
+     *  From https://github.com/terrakok/Cicerone/blob/master/sample/src/main/java/com/github/terrakok/cicerone/sample/ui/bottom/BottomNavigationActivity.kt
+     */
+    override fun onBackPressed() {
+        val fm = supportFragmentManager
+        var fragment: Fragment? = null
+        val fragments = fm.fragments
+        for (f in fragments) {
+            if (f.isVisible) {
+                fragment = f
+                break
+            }
+        }
+        Log.d(TAG, "fragment : ${fragment}")
+        Log.d(TAG, "onBackPressed")
+        Log.d(TAG, "fragment is null : ${fragment == null}")
+        Log.d(TAG, "fragment is BackButtonListener ${fragment is BackButtonListener}")
+        if (fragment != null && fragment is BackButtonListener
+            && (fragment as BackButtonListener).onBackPressed()
+        ) {
+            Log.d(TAG, "fragment not null")
+            return
+        } else {
+            Log.d(TAG, "standart behavior")
+            super.onBackPressed()
+        }
     }
 }

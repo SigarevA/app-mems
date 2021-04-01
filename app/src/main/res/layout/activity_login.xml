@@ -10,7 +10,6 @@
     android:theme="@style/Theme.AppCompat.NoActionBar"
     tools:context=".ui.Activites.LoginActivity">
 
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/line_3"
         android:layout_width="wrap_content"
@@ -19,12 +18,10 @@
         app:layout_constraintGuide_begin="80dp" />
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-
         app:layout_constraintTop_toTopOf="@id/line_3">
 
         <studio.carbonylgroup.textfieldboxes.TextFieldBoxes

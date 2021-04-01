@@ -1,7 +1,8 @@
 package ru.samsung.itshool.memandos.model.api
 
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
+
+import io.reactivex.Completable
+import io.reactivex.Observable
 import retrofit2.http.Body
 import retrofit2.http.POST
 import ru.samsung.itshool.memandos.model.response.AuthRequest

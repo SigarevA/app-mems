@@ -5,12 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.DiffUtil
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import ru.samsung.itshool.memandos.SingleLiveEvent
 import ru.samsung.itshool.memandos.domain.Mem
 import ru.samsung.itshool.memandos.model.repo.SurfMemesRepo
-import ru.samsung.itshool.memandos.ui.adapters.MemesDiffCallback
 import java.util.*
 import javax.inject.Inject
 
@@ -18,38 +19,33 @@ class RobbionVM : ViewModel() {
 
     @Inject
     lateinit var surfMemesRepo: SurfMemesRepo
-    private var _memes: List<Mem> = Collections.emptyList()
+    private val memMutableLiveData = MutableLiveData<List<Mem>>()
+    private val compositeDisposable = CompositeDisposable()
+    val eventLiveData = SingleLiveEvent<String>()
+    val memLiveData: LiveData<List<Mem>>
+        get() = memMutableLiveData
 
-    fun refreshMemes(): LiveData<Result<DiffUtil.DiffResult>> {
-        val resultRefresh = MutableLiveData<Result<DiffUtil.DiffResult>>()
-        Log.d(TAG, "Refresh memes!")
-        loadMemes()
-            .map {
-                Log.d(TAG, "Refresh complete!")
-                DiffUtil.calculateDiff(MemesDiffCallback(it, _memes))
-            }
-            .subscribe(
-                { resultRefresh.value = Result.success(it) },
-                { resultRefresh.value = Result.failure(it) }
-            )
-        return resultRefresh
+    /*
+    TODO move surfMemesRepo to constructor
+    init {
+        getMemes()
+    }
+     */
+
+    fun searchQuery() {
     }
 
-    fun getMemes(): LiveData<Result<List<Mem>>> {
-        val memesResponse = MutableLiveData<Result<List<Mem>>>()
-        loadMemes()
+    fun refreshMemes() {
+        getMemes()
+    }
+
+    fun getMemes() {
+        val dispose = loadMemes()
             .subscribe(
-                {
-                    _memes = it
-                    memesResponse.value = Result.success(it)
-                    Log.d(TAG, memesResponse.value.toString())
-                },
-                {
-                    memesResponse.value = Result.failure(it)
-                    Log.d(TAG, it.message)
-                }
+                { memMutableLiveData.value = it },
+                { eventLiveData.value = it.message }
             )
-        return memesResponse
+        compositeDisposable.add(dispose)
     }
 
     private fun loadMemes(): Observable<List<Mem>> {

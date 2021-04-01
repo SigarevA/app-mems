@@ -2,10 +2,10 @@ package ru.samsung.itshool.memandos.di.modules
 
 import dagger.Module
 import dagger.Provides
-import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.samsung.itshool.memandos.model.BASE_URL
 import javax.inject.Singleton
@@ -14,9 +14,9 @@ import javax.inject.Singleton
 class NetworkModule {
     @Singleton
     @Provides
-    fun provideHttpLoggingInterceptor() : HttpLoggingInterceptor {
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor()
-            .setLevel(HttpLoggingInterceptor.Level.BODY )
+            .setLevel(HttpLoggingInterceptor.Level.BODY)
     }
 
     @Singleton
@@ -29,11 +29,11 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(client : OkHttpClient) : Retrofit {
+    fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

@@ -3,16 +3,18 @@ package ru.samsung.itshool.memandos.ui.Activites
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.activity_login.*
 import ru.samsung.itshool.memandos.R
+import ru.samsung.itshool.memandos.databinding.ActivityLoginBinding
 import ru.samsung.itshool.memandos.di.ComponentHolder
 import ru.samsung.itshool.memandos.ui.VM.LoginVM
 import ru.samsung.itshool.memandos.utils.SnackBarsUtil
+import by.kirich1409.viewbindingdelegate.viewBinding
 
 private val QUANTITY: Int = 5
 
@@ -21,12 +23,12 @@ class LoginActivity : AppCompatActivity() {
     private val TAG: String = LoginActivity::class.java.name
 
     private lateinit var loginVM: LoginVM
+    private val binding by viewBinding(ActivityLoginBinding::bind, R.id.login_container)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_login)
-        getSupportActionBar()?.hide()
         loginVM = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
             .create(LoginVM::class.java)
         ComponentHolder.appComponent.inject(loginVM)
@@ -36,31 +38,31 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun initView() {
-        with(textBoxesPassword) {
+        with(binding.textBoxesPassword) {
             helperText = String.format("Пароль должен содержать %d символов", QUANTITY)
             maxCharacters = QUANTITY
         }
+        binding.loginValue.addTextChangedListener(PhoneNumberFormattingTextWatcher("RU"))
     }
 
     private fun initListener() {
-
-        loginBtn.setOnClickListener {
-            val emptyPassword = passwordValue.text.toString().trim().equals("")
-            val emptyLogin = loginValue.text.toString().trim().equals("")
+        binding.loginBtn.setOnClickListener {
+            val emptyPassword = binding.passwordValue.text.toString().trim().equals("")
+            val emptyLogin = binding.loginValue.text.toString().trim().equals("")
             if (emptyPassword)
-                textBoxesPassword.setError(
+                binding.textBoxesPassword.setError(
                     getString(R.string.null_text_boxes),
                     false
                 )
             if (emptyLogin)
-                textBoxesLogin.setError(
+                binding.textBoxesLogin.setError(
                     getString(R.string.null_text_boxes),
                     true
                 )
             if (!emptyLogin && !emptyPassword) {
                 loginVM.autheraziton(
-                    loginValue.text.toString(),
-                    passwordValue.text.toString()
+                    binding.loginValue.text.toString(),
+                    binding.passwordValue.text.toString()
                 )
                     .observe(this, Observer {
                         when {

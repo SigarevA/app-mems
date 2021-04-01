@@ -3,5 +3,4 @@
     <declare-styleable name="InfoUserViewAttr">
         <attr name="iuv_user_photo_url" format="string"/>
     </declare-styleable>
-
 </resources>

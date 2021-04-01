@@ -3,19 +3,23 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="android:statusBarColor">@color/colorSurf</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorSurf</item>
         <item name="colorAccent">@color/colorSurf</item>
+        <item name="android:colorPressedHighlight">@color/colorSurf</item>
         <item name="editTextColor">@color/toolBarBack</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:theme">@android:style/Theme.Black.NoTitleBar</item>
         <item name="alertDialogTheme">@style/YDialog</item>
         <item name="android:itemBackground">@color/colorSurf</item>
         <item name="android:itemTextAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="autoCompleteTextViewStyle">@style/SearchAutoCompleteTextView</item>
     </style>
 
-    <style name="styleMenu" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="SearchAutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorHint">@android:color/white</item>
     </style>
-
 
     <style name="floating_la">
         <item name="helperTextColor">   #ffffffff   </item>

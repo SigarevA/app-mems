@@ -16,4 +16,8 @@
     <string name="Logout">Выйти</string>
     <string name="null_text_boxes">Поле не может быть пустым!</string>
     <string name="invalid_auth">Вы ввели неверные данные. Попробуйте еще раз.</string>
+    <string name="like">Оценить</string>
+    <string name="navigation_menu_profile">Профиль</string>
+    <string name="navigation_menu_adding_mem">Добавить</string>
+    <string name="navigation_menu_tape">Лента</string>
 </resources>

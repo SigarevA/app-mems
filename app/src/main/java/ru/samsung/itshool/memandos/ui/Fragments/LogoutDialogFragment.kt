@@ -11,7 +11,7 @@ private const val TAG = "LogoutDialogFragment"
 
 open class LogoutDialogFragment() : DialogFragment() {
 
-    internal lateinit var listener: NoticeDialogListener
+    private lateinit var listener: NoticeDialogListener
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -48,5 +48,4 @@ open class LogoutDialogFragment() : DialogFragment() {
             )
         }
     }
-
 }

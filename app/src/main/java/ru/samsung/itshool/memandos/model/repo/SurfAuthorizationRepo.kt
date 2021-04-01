@@ -1,7 +1,8 @@
 package ru.samsung.itshool.memandos.model.repo
 
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
+
+import io.reactivex.Completable
+import io.reactivex.Observable
 import ru.samsung.itshool.memandos.model.api.AndroidSchoolAuthAPI
 import ru.samsung.itshool.memandos.model.response.AuthRequest
 import ru.samsung.itshool.memandos.model.response.AuthResponse

@@ -5,10 +5,11 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
-import ru.samsung.itshool.memandos.model.response.AuthRequest
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import ru.samsung.itshool.memandos.model.repo.SurfAuthorizationRepo
+import ru.samsung.itshool.memandos.model.response.AuthRequest
 import ru.samsung.itshool.memandos.storage.UserStorageSharedPref
 import javax.inject.Inject
 
@@ -16,14 +17,16 @@ import javax.inject.Inject
 class LoginVM(application: Application) : AndroidViewModel(application) {
 
     @Inject
-    lateinit var surfAuthRepo : SurfAuthorizationRepo
-    private val TAG : String = LoginVM::class.java.name
+    lateinit var surfAuthRepo: SurfAuthorizationRepo
+    private val compositeDisposable = CompositeDisposable()
+    private val TAG: String = LoginVM::class.java.name
 
-    fun autheraziton(login : String, password : String ) : LiveData<Result<Unit>> {
+    fun autheraziton(login: String, password: String): LiveData<Result<Unit>> {
         Log.d(TAG, "autheraziton")
 
         val authLiveData = MutableLiveData<Result<Unit>>()
-        surfAuthRepo.authorize(
+
+        val dispose = surfAuthRepo.authorize(
             AuthRequest(
                 login,
                 password
@@ -41,6 +44,12 @@ class LoginVM(application: Application) : AndroidViewModel(application) {
                     authLiveData.value = Result.failure(it)
                 }
             )
+        compositeDisposable.add(dispose)
         return authLiveData
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
     }
 }

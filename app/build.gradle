@@ -14,10 +14,20 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    viewBinding {
+        enabled true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -28,6 +38,7 @@ android {
 
 project.ext {
     dagger2Version = "2.30.1"
+    navVersion = "2.3.2"
 }
 
 dependencies {
@@ -39,8 +50,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.navigation:navigation-fragment:2.0.0'
-    implementation 'androidx.navigation:navigation-ui:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.0.0'
@@ -57,10 +66,7 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-
-    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0"
-    implementation "io.reactivex.rxjava3:rxjava:3.0.2"
-    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
 
     implementation("com.squareup.okhttp3:logging-interceptor:4.5.0")
 
@@ -79,4 +85,7 @@ dependencies {
     //Dagger2
     implementation "com.google.dagger:dagger:$dagger2Version"
     kapt "com.google.dagger:dagger-compiler:$dagger2Version"
+
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.4'
+    implementation "com.github.terrakok:cicerone:6.6"
 }

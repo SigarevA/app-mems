@@ -1,10 +1,13 @@
 package ru.samsung.itshool.memandos.domain
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "memes")
+@Parcelize
 data class Mem(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "mem_id")
@@ -19,4 +22,4 @@ data class Mem(
     val createdDate : Long?,
     @ColumnInfo(name = "mem_photoUrl")
     val photoUrl : String?
-)
+) : Parcelable

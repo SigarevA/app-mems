@@ -1,71 +1,71 @@
 package ru.samsung.itshool.memandos.ui.adapters
 
-import android.graphics.Bitmap
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.MultiTransformation
-import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
-import ru.samsung.itshool.memandos.R
+import ru.samsung.itshool.memandos.databinding.RepresentationMemBinding
 import ru.samsung.itshool.memandos.domain.Mem
 
+private val TAG = "MemsAdapter"
+
 class MemsAdapter(
-    val mems: Array<Mem>,
     val listener: AdapterInteractionListener
-) : RecyclerView.Adapter<MemsAdapter.ViewHolder>() {
+) : ListAdapter<Mem, MemsAdapter.ViewHolder>(MemDiffCallback) {
 
-    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        val MemTitle: TextView
-        val imgMem: ImageView
+    private val roundedCorners = RoundedCornersTransformation(
+        64,
+        0,
+        RoundedCornersTransformation.CornerType.TOP
+    )
 
-        init {
-            MemTitle = v.findViewById(R.id.title_mem)
-            imgMem = v.findViewById(R.id.img_mem)
+    class ViewHolder(
+        private val binding: RepresentationMemBinding,
+        private val listener: AdapterInteractionListener
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(mem: Mem) {
+            binding.titleMem.text = mem.title
+            binding.imgMem.setOnClickListener {
+                listener.onItemClick(mem)
+            }
+            binding.share.setOnClickListener {
+                listener.onItemShare(mem)
+            }
+            Glide.with(binding.root.context)
+                .load(mem.photoUrl)
+                .into(binding.imgMem)
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        Log.d(TAG, "binding view")
-        val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.representation_mem, parent, false)
-        return ViewHolder(v)
+        Log.d(TAG, "create view holder")
+        val binding =
+            RepresentationMemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding, listener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.d(TAG, "binding view")
-        holder.MemTitle.text = mems[position].title
-        Glide.with(holder.itemView)
-            .load(mems[position].photoUrl)
-            /*.apply(
-                RequestOptions.bitmapTransform(
-                    RoundedCornersTransformation(
-                        64,
-                        0,
-                        RoundedCornersTransformation.CornerType.TOP
-                    )
-                )
-            )*/
-            .into(holder.imgMem)
-        holder.imgMem.setOnClickListener {
-            listener.onItemClick(mems[position])
-        }
+        holder.bind(getItem(position))
     }
 
     @FunctionalInterface
     interface AdapterInteractionListener {
         fun onItemClick(mem: Mem)
+        fun onItemShare(mem : Mem)
     }
 
-    override fun getItemCount() = mems.size
+    object MemDiffCallback : DiffUtil.ItemCallback<Mem>() {
+        override fun areItemsTheSame(oldItem: Mem, newItem: Mem): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-    companion object {
-        private val TAG = "MemsAdapter"
+        override fun areContentsTheSame(oldItem: Mem, newItem: Mem): Boolean {
+            return oldItem == newItem
+        }
     }
 }

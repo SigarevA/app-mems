@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import ru.samsung.itshool.memandos.model.repo.SurfAuthorizationRepo
 import javax.inject.Inject
 
@@ -15,12 +17,10 @@ class TapeVM : ViewModel() {
     lateinit var authRepo: SurfAuthorizationRepo
 
     fun logout(): LiveData<Result<Unit>> {
-
         val resp = MutableLiveData<Result<Unit>>()
-
         authRepo.logout()
-            .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
-            .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 resp.value = Result.success(Unit)
             },

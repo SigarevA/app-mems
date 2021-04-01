@@ -74,10 +74,7 @@ class DetailMemActivity : AppCompatActivity() {
             intent.putExtra(MEM_DATE_CREATED, mem.createdDate)
             intent.putExtra(MEM_PHOTO_URL, mem.photoUrl)
 
-            Log.d(TAG, "date : " + mem.createdDate)
-
             return intent
         }
-
     }
 }
