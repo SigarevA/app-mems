@@ -16,7 +16,7 @@ import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.databinding.ActivityAddingMemBinding
 import ru.samsung.itshool.memandos.di.ComponentHolder
 import ru.samsung.itshool.memandos.domain.Mem
-import ru.samsung.itshool.memandos.ui.Fragments.DialogFragment
+import ru.samsung.itshool.memandos.ui.fragments.DialogFragment
 import ru.samsung.itshool.memandos.ui.VM.AddingMemVM
 import java.util.*
 
@@ -84,7 +84,7 @@ class AddingMemActivity : AppCompatActivity() {
                         photoUrl = photoURL
                     )
                 )
-                    .observe(this, androidx.lifecycle.Observer {
+                    .observe(this) {
                         val data = Intent()
                         when {
                             it.isSuccess -> data.putExtra(SUCCESS_ADDING, true)
@@ -92,7 +92,7 @@ class AddingMemActivity : AppCompatActivity() {
                         }
                         setResult(Activity.RESULT_OK, data)
                         finish()
-                    })
+                    }
                 return true
             }
         }

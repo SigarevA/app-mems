@@ -1,14 +1,12 @@
-package ru.samsung.itshool.memandos.ui.Fragments
+package ru.samsung.itshool.memandos.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.terrakok.cicerone.Cicerone
-import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import ru.samsung.itshool.memandos.R
@@ -62,6 +60,7 @@ class TabContainerFragment : Fragment(), BackButtonListener, RouterProvider {
             when (containerName) {
                 "TAPE" -> router.replaceScreen(Screens.ribbon())
                 "PROFILE" -> router.replaceScreen(Screens.Profile())
+                "ADDING_MEM" -> router.replaceScreen(Screens.AddingMem())
                 else -> throw IllegalArgumentException("Container name not recognized!")
             }
         }

@@ -1,4 +1,4 @@
-package ru.samsung.itshool.memandos.ui.Fragments
+package ru.samsung.itshool.memandos.ui.fragments
 
 import android.app.SearchManager
 import android.content.Context
@@ -9,31 +9,23 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.github.terrakok.cicerone.Navigator
-import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
-import com.github.terrakok.cicerone.Screen
-import com.github.terrakok.cicerone.androidx.AppNavigator
-import com.github.terrakok.cicerone.androidx.Creator
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.databinding.FragmentRibbonBinding
 import ru.samsung.itshool.memandos.di.ComponentHolder
 import ru.samsung.itshool.memandos.domain.Mem
-import ru.samsung.itshool.memandos.ui.Activites.DetailMemActivity
 import ru.samsung.itshool.memandos.ui.Screens
 import ru.samsung.itshool.memandos.ui.VM.RobbionVM
 import ru.samsung.itshool.memandos.ui.adapters.MemsAdapter
 import ru.samsung.itshool.memandos.ui.common.BackButtonListener
 import ru.samsung.itshool.memandos.ui.common.RouterProvider
 import ru.samsung.itshool.memandos.utils.SnackBarsUtil
-import javax.inject.Inject
 
 private const val TAG = "RibbonFragment"
 

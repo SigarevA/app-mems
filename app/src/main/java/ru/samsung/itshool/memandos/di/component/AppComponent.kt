@@ -7,9 +7,9 @@ import ru.samsung.itshool.memandos.di.modules.AndroidSchoolAPIModule
 import ru.samsung.itshool.memandos.di.modules.NavigationModule
 import ru.samsung.itshool.memandos.di.modules.NetworkModule
 import ru.samsung.itshool.memandos.di.modules.RoomModule
-import ru.samsung.itshool.memandos.ui.Fragments.DetailMemFragment
-import ru.samsung.itshool.memandos.ui.Fragments.RibbonFragment
-import ru.samsung.itshool.memandos.ui.Fragments.TabContainerFragment
+import ru.samsung.itshool.memandos.ui.fragments.DetailMemFragment
+import ru.samsung.itshool.memandos.ui.fragments.RibbonFragment
+import ru.samsung.itshool.memandos.ui.fragments.TabContainerFragment
 import ru.samsung.itshool.memandos.ui.VM.*
 import javax.inject.Singleton
 

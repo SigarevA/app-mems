@@ -1,4 +1,4 @@
-package ru.samsung.itshool.memandos.ui.Fragments
+package ru.samsung.itshool.memandos.ui.fragments
 
 import android.app.Dialog
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package ru.samsung.itshool.memandos.ui.Fragments
+package ru.samsung.itshool.memandos.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -10,15 +10,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.github.terrakok.cicerone.Router
 import ru.samsung.itshool.memandos.NAME
 import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.USER_DESCRIPTION
 import ru.samsung.itshool.memandos.databinding.FragmentProfileBinding
 import ru.samsung.itshool.memandos.di.ComponentHolder
 import ru.samsung.itshool.memandos.domain.Mem
-import ru.samsung.itshool.memandos.ui.Activites.DetailMemActivity
+import ru.samsung.itshool.memandos.ui.Screens
 import ru.samsung.itshool.memandos.ui.VM.ProfileVM
 import ru.samsung.itshool.memandos.ui.adapters.MemsAdapter
+import ru.samsung.itshool.memandos.ui.common.RouterProvider
 import ru.samsung.itshool.memandos.utils.SharedPreferencesUtli
 
 private const val TAG = "ProfileFragment"
@@ -30,6 +32,9 @@ class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
     private val adapter = MemsAdapter(this)
 
     private val binding by viewBinding(FragmentProfileBinding::bind)
+
+    private val router : Router
+        get() = (requireParentFragment() as RouterProvider).router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,10 +101,7 @@ class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
     }
 
     override fun onItemClick(mem: Mem) {
-        context?.let {
-            val intent = DetailMemActivity.getIntent(it, mem)
-            startActivity(intent)
-        }
+        router.navigateTo(Screens.detailMem(mem))
     }
 
     override fun onItemShare(mem: Mem) {
