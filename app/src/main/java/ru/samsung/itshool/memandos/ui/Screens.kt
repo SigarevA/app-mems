@@ -2,10 +2,7 @@ package ru.samsung.itshool.memandos.ui
 
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import ru.samsung.itshool.memandos.domain.Mem
-import ru.samsung.itshool.memandos.ui.Fragments.DetailMemFragment
-import ru.samsung.itshool.memandos.ui.Fragments.ProfileFragment
-import ru.samsung.itshool.memandos.ui.Fragments.RibbonFragment
-import ru.samsung.itshool.memandos.ui.Fragments.TabContainerFragment
+import ru.samsung.itshool.memandos.ui.fragments.*
 
 object Screens {
    fun ribbon() = FragmentScreen {
@@ -22,5 +19,9 @@ object Screens {
 
     fun Tab(name : String) = FragmentScreen {
         TabContainerFragment.newInstance(name)
+    }
+
+    fun AddingMem() = FragmentScreen {
+        AddingMemFragment()
     }
 }

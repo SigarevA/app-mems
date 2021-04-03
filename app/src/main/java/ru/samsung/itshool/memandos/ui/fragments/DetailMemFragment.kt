@@ -1,4 +1,4 @@
-package ru.samsung.itshool.memandos.ui.Fragments
+package ru.samsung.itshool.memandos.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -8,16 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
-import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
-import com.github.terrakok.cicerone.androidx.AppNavigator
 import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.databinding.FragmentDetailMemBinding
 import ru.samsung.itshool.memandos.di.ComponentHolder
 import ru.samsung.itshool.memandos.domain.Mem
 import ru.samsung.itshool.memandos.ui.common.RouterProvider
 import java.util.*
-import javax.inject.Inject
 
 private const val ARG_MEM = "mem"
 

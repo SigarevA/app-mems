@@ -20,7 +20,7 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/main_toolbar"
-        tools:context=".ui.Fragments.RibbonFragment">
+        tools:context=".ui.fragments.RibbonFragment">
 
 
         <ProgressBar

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/tape"
+        android:id="@+id/item_tape"
         android:icon="@drawable/ic_tab4_active"
         android:title="@string/navigation_menu_tape"
         app:showAsAction="ifRoom" />
@@ -13,7 +13,7 @@
         android:title="@string/navigation_menu_adding_mem"
         app:showAsAction="always" />
     <item
-        android:id="@+id/profile"
+        android:id="@+id/item_profile"
         android:icon="@drawable/ic_user_icon"
         android:title="@string/navigation_menu_profile"
         app:showAsAction="always" />

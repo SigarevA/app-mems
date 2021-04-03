@@ -13,8 +13,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.databinding.ActivityTapeBinding
 import ru.samsung.itshool.memandos.di.ComponentHolder
-import ru.samsung.itshool.memandos.ui.Fragments.LogoutDialogFragment
-import ru.samsung.itshool.memandos.ui.Fragments.TabContainerFragment
+import ru.samsung.itshool.memandos.ui.fragments.LogoutDialogFragment
+import ru.samsung.itshool.memandos.ui.fragments.TabContainerFragment
 import ru.samsung.itshool.memandos.ui.Screens.Tab
 import ru.samsung.itshool.memandos.ui.VM.TapeVM
 import ru.samsung.itshool.memandos.ui.common.BackButtonListener
@@ -47,10 +47,13 @@ class TapeActivity : AppCompatActivity(), LogoutDialogFragment.NoticeDialogListe
         transaction.commitNow()
         binding.navigationMain.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.tape -> { selectTab("TAPE")
+                R.id.item_tape -> { selectTab("TAPE")
                     true
                 }
-                R.id.profile -> { selectTab("PROFILE")
+                R.id.item_profile -> { selectTab("PROFILE")
+                    true
+                }
+                R.id.item_adding_mem -> { selectTab("ADDING_MEM")
                     true
                 }
                 else -> false
