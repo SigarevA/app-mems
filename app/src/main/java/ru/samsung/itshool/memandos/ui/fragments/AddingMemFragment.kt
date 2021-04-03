@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.samsung.itshool.memandos.R
-import ru.samsung.itshool.memandos.databinding.FragmentDetailMemBinding
+import ru.samsung.itshool.memandos.databinding.FragmentAddingMemBinding
 import ru.samsung.itshool.memandos.domain.Mem
 import ru.samsung.itshool.memandos.ui.VM.AddingMemResult
 import ru.samsung.itshool.memandos.ui.VM.AddingMemVM
@@ -20,7 +20,7 @@ private const val photoURL = "https://i.ibb.co/Tt9N3Xc/prikoli-15.jpg"
 
 class AddingMemFragment : Fragment() {
 
-    private val binding by viewBinding(FragmentDetailMemBinding::bind)
+    private val binding by viewBinding(FragmentAddingMemBinding::bind)
 
     private lateinit var vm : AddingMemVM
 
@@ -49,7 +49,7 @@ class AddingMemFragment : Fragment() {
     }
 
     private fun initListeners() {
-        binding.detailToolbar.setOnMenuItemClickListener {
+        binding.toolbarAddingMem.setOnMenuItemClickListener {
             when(it.itemId) {
                 R.id.create_mem_btn -> {
                     vm.saveMem(getMemFromBinding())
@@ -62,8 +62,8 @@ class AddingMemFragment : Fragment() {
 
     private fun getMemFromBinding(date : Date = Date()) : Mem {
         return Mem(
-            title = binding.titleMemTextView.text.toString(),
-            description = binding.memDescription.text.toString(),
+            title = binding.headMemText.text.toString(),
+            description = binding.descriptionMemText.text.toString(),
             createdDate = date.time,
             photoUrl = photoURL
         )
