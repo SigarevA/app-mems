@@ -1,18 +1,16 @@
 package ru.samsung.itshool.memandos.storage
 
-import android.content.Context
 import ru.samsung.itshool.memandos.*
 import ru.samsung.itshool.memandos.domain.UserInfo
-import ru.samsung.itshool.memandos.utils.SharedPreferencesUtli
+import ru.samsung.itshool.memandos.utils.SharedPreferencesUtil
+import javax.inject.Inject
 
-object UserStorageSharedPref {
-
-    fun saveUserData(user : UserInfo, context: Context) {
-        SharedPreferencesUtli.insertData(context, ID, user.id )
-        SharedPreferencesUtli.insertData(context, NAME, user.username)
-        SharedPreferencesUtli.insertData(context, FIRST_NAME, user.firstName)
-        SharedPreferencesUtli.insertData(context, LAST_NAME, user.lastName)
-        SharedPreferencesUtli.insertData(context, USER_DESCRIPTION, user.userDescription)
+class UserStorageSharedPref @Inject constructor(private val sharedPreferencesUtil: SharedPreferencesUtil) {
+    fun saveUserData(user: UserInfo) {
+        sharedPreferencesUtil.insertData(ID, user.id)
+        sharedPreferencesUtil.insertData(NAME, user.username)
+        sharedPreferencesUtil.insertData(FIRST_NAME, user.firstName)
+        sharedPreferencesUtil.insertData(LAST_NAME, user.lastName)
+        sharedPreferencesUtil.insertData(USER_DESCRIPTION, user.userDescription)
     }
-
 }

@@ -1,5 +1,6 @@
 package ru.samsung.itshool.memandos.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -21,7 +22,9 @@ import ru.samsung.itshool.memandos.ui.Screens
 import ru.samsung.itshool.memandos.ui.VM.ProfileVM
 import ru.samsung.itshool.memandos.ui.adapters.MemsAdapter
 import ru.samsung.itshool.memandos.ui.common.RouterProvider
-import ru.samsung.itshool.memandos.utils.SharedPreferencesUtli
+import ru.samsung.itshool.memandos.ui.factories.ProfileVmFactory
+import ru.samsung.itshool.memandos.utils.SharedPreferencesUtil
+import javax.inject.Inject
 
 private const val TAG = "ProfileFragment"
 private const val photoURL = "https://i.ibb.co/w06Zg8H/s1200-1.jpg"
@@ -33,14 +36,22 @@ class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
 
     private val binding by viewBinding(FragmentProfileBinding::bind)
 
+    @Inject lateinit var profileVmFactory: ProfileVmFactory
+
+    @Inject lateinit var sharedPreferencesUtil: SharedPreferencesUtil
+
     private val router : Router
         get() = (requireParentFragment() as RouterProvider).router
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        ComponentHolder.appComponent.inject(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        profileVM = ViewModelProvider(this).get(ProfileVM::class.java)
-        ComponentHolder.appComponent.inject(profileVM)
+        profileVM = ViewModelProvider(this, profileVmFactory).get(ProfileVM::class.java)
     }
 
     override fun onCreateView(
@@ -73,11 +84,12 @@ class ProfileFragment : Fragment(), MemsAdapter.AdapterInteractionListener {
     private fun fillView() {
         binding.recyclerViewMyMems.layoutManager =
             StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
+        binding.recyclerViewMyMems.adapter = adapter
         binding.imgUser.setImgPath(photoURL)
 
-        with(SharedPreferencesUtli) {
-            binding.nameUser.text = retriveData(requireContext(), NAME) ?: "name"
-            binding.descriptoinUser.text = retriveData(requireContext(), USER_DESCRIPTION) ?: "des"
+        with(sharedPreferencesUtil) {
+            binding.nameUser.text = retriveData(NAME) ?: "name"
+            binding.descriptoinUser.text = retriveData(USER_DESCRIPTION) ?: "des"
         }
     }
 

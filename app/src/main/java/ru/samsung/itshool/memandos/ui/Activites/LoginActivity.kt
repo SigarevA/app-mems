@@ -9,29 +9,32 @@ import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.databinding.ActivityLoginBinding
 import ru.samsung.itshool.memandos.di.ComponentHolder
 import ru.samsung.itshool.memandos.ui.VM.LoginVM
+import ru.samsung.itshool.memandos.ui.factories.LoginVmFactory
 import ru.samsung.itshool.memandos.utils.SnackBarsUtil
-import by.kirich1409.viewbindingdelegate.viewBinding
+import javax.inject.Inject
 
 private val QUANTITY: Int = 5
+private const val TAG = "LoginActivity"
 
 class LoginActivity : AppCompatActivity() {
-
-    private val TAG: String = LoginActivity::class.java.name
 
     private lateinit var loginVM: LoginVM
     private val binding by viewBinding(ActivityLoginBinding::bind, R.id.login_container)
 
+    @Inject
+    lateinit var loginVmFactory: LoginVmFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        ComponentHolder.appComponent.inject(this)
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_login)
-        loginVM = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-            .create(LoginVM::class.java)
-        ComponentHolder.appComponent.inject(loginVM)
+        loginVM = ViewModelProvider(this, loginVmFactory).get(LoginVM::class.java)
         initView()
         initListener()
     }
@@ -60,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
                     true
                 )
             if (!emptyLogin && !emptyPassword) {
-                loginVM.autheraziton(
+                loginVM.authorize(
                     binding.loginValue.text.toString(),
                     binding.passwordValue.text.toString()
                 )

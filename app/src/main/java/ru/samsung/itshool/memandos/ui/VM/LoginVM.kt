@@ -1,31 +1,27 @@
 package ru.samsung.itshool.memandos.ui.VM
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import ru.samsung.itshool.memandos.model.repo.SurfAuthorizationRepo
 import ru.samsung.itshool.memandos.model.response.AuthRequest
 import ru.samsung.itshool.memandos.storage.UserStorageSharedPref
-import javax.inject.Inject
 
+private const val TAG = "LoginVM"
 
-class LoginVM(application: Application) : AndroidViewModel(application) {
+class LoginVM(
+    private val surfAuthRepo: SurfAuthorizationRepo,
+    private val userStorageSharedPref: UserStorageSharedPref
+) : ViewModel() {
 
-    @Inject
-    lateinit var surfAuthRepo: SurfAuthorizationRepo
     private val compositeDisposable = CompositeDisposable()
-    private val TAG: String = LoginVM::class.java.name
 
-    fun autheraziton(login: String, password: String): LiveData<Result<Unit>> {
-        Log.d(TAG, "autheraziton")
-
+    fun authorize(login: String, password: String): LiveData<Result<Unit>> {
         val authLiveData = MutableLiveData<Result<Unit>>()
-
         val dispose = surfAuthRepo.authorize(
             AuthRequest(
                 login,
@@ -37,7 +33,7 @@ class LoginVM(application: Application) : AndroidViewModel(application) {
             .map { it.convert() }
             .subscribe(
                 {
-                    UserStorageSharedPref.saveUserData(it.userInfo, getApplication())
+                    userStorageSharedPref.saveUserData(it.userInfo)
                     authLiveData.value = Result.success(Unit)
                 },
                 {

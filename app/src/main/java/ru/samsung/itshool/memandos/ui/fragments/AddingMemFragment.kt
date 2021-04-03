@@ -10,11 +10,14 @@ import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.samsung.itshool.memandos.R
 import ru.samsung.itshool.memandos.databinding.FragmentAddingMemBinding
+import ru.samsung.itshool.memandos.di.ComponentHolder
 import ru.samsung.itshool.memandos.domain.Mem
 import ru.samsung.itshool.memandos.ui.VM.AddingMemResult
 import ru.samsung.itshool.memandos.ui.VM.AddingMemVM
+import ru.samsung.itshool.memandos.ui.factories.AddingMemVmFactory
 import ru.samsung.itshool.memandos.utils.SnackBarsUtil
 import java.util.*
+import javax.inject.Inject
 
 private const val photoURL = "https://i.ibb.co/Tt9N3Xc/prikoli-15.jpg"
 
@@ -24,9 +27,13 @@ class AddingMemFragment : Fragment() {
 
     private lateinit var vm : AddingMemVM
 
+    @Inject
+    lateinit var addingMemVmFactory: AddingMemVmFactory
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        vm = ViewModelProvider(this).get(AddingMemVM::class.java)
+        ComponentHolder.appComponent.inject(this)
+        vm = ViewModelProvider(this, addingMemVmFactory).get(AddingMemVM::class.java)
     }
 
     override fun onCreateView(

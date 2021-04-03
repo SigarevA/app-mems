@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.DiffUtil
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -13,24 +12,18 @@ import ru.samsung.itshool.memandos.SingleLiveEvent
 import ru.samsung.itshool.memandos.domain.Mem
 import ru.samsung.itshool.memandos.model.repo.SurfMemesRepo
 import java.util.*
-import javax.inject.Inject
 
-class RobbionVM : ViewModel() {
+class RibbonVM(private val surfMemesRepo: SurfMemesRepo ) : ViewModel() {
 
-    @Inject
-    lateinit var surfMemesRepo: SurfMemesRepo
     private val memMutableLiveData = MutableLiveData<List<Mem>>()
     private val compositeDisposable = CompositeDisposable()
     val eventLiveData = SingleLiveEvent<String>()
     val memLiveData: LiveData<List<Mem>>
         get() = memMutableLiveData
 
-    /*
-    TODO move surfMemesRepo to constructor
     init {
         getMemes()
     }
-     */
 
     fun searchQuery() {
     }
@@ -61,6 +54,6 @@ class RobbionVM : ViewModel() {
     }
 
     companion object {
-        private val TAG = RobbionVM::class.java.name
+        private val TAG = RibbonVM::class.java.name
     }
 }

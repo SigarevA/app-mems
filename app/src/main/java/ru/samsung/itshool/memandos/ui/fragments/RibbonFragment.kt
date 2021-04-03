@@ -21,11 +21,13 @@ import ru.samsung.itshool.memandos.databinding.FragmentRibbonBinding
 import ru.samsung.itshool.memandos.di.ComponentHolder
 import ru.samsung.itshool.memandos.domain.Mem
 import ru.samsung.itshool.memandos.ui.Screens
-import ru.samsung.itshool.memandos.ui.VM.RobbionVM
+import ru.samsung.itshool.memandos.ui.VM.RibbonVM
 import ru.samsung.itshool.memandos.ui.adapters.MemsAdapter
 import ru.samsung.itshool.memandos.ui.common.BackButtonListener
 import ru.samsung.itshool.memandos.ui.common.RouterProvider
+import ru.samsung.itshool.memandos.ui.factories.RibbonVmFactory
 import ru.samsung.itshool.memandos.utils.SnackBarsUtil
+import javax.inject.Inject
 
 private const val TAG = "RibbonFragment"
 
@@ -35,11 +37,13 @@ class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener,
     private val binding by viewBinding(FragmentRibbonBinding::bind)
     private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
     private val memsAdapter = MemsAdapter(this)
-    private lateinit var robbionVM: RobbionVM
+    private lateinit var robbionVM: RibbonVM
 
     private val router : Router
         get() = ( requireParentFragment() as RouterProvider).router
 
+    @Inject
+    lateinit var ribbonVmFactory: RibbonVmFactory
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -50,8 +54,7 @@ class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener,
         super.onCreate(savedInstanceState)
         Log.d(TAG, "create ribbon fragment")
         setHasOptionsMenu(true)
-        robbionVM = ViewModelProvider(this).get(RobbionVM::class.java)
-        ComponentHolder.appComponent.inject(robbionVM)
+        robbionVM = ViewModelProvider(this, ribbonVmFactory).get(RibbonVM::class.java)
     }
 
     fun bindingView() {
@@ -86,7 +89,6 @@ class RibbonFragment : Fragment(), MemsAdapter.AdapterInteractionListener,
         super.onViewCreated(view, savedInstanceState)
         bindingView()
         initVM()
-        robbionVM.getMemes()
     }
 
     fun successLoadMemes(v: View, memes: List<Mem>) {

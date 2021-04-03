@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import ru.samsung.itshool.memandos.SingleLiveEvent
@@ -18,16 +19,13 @@ sealed class AddingMemResult {
     object SuccessAddingResult : AddingMemResult()
 }
 
-class AddingMemVM(application: Application) : AndroidViewModel(application) {
+class AddingMemVM(private val  memDataBase: MemDatabase) : ViewModel(){
 
     private val compositeDisposable = CompositeDisposable()
     private val eventSingleLiveEvent : SingleLiveEvent<AddingMemResult> = SingleLiveEvent()
 
     val eventLiveData : LiveData<AddingMemResult>
         get() = eventSingleLiveEvent
-
-    @Inject
-    lateinit var memDataBase: MemDatabase
 
     fun saveMem(mem: Mem): LiveData<Result<Unit>> {
         val resp = MutableLiveData<Result<Unit>>()

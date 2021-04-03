@@ -3,30 +3,32 @@ package ru.samsung.itshool.memandos.di.component
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import ru.samsung.itshool.memandos.di.modules.AndroidSchoolAPIModule
-import ru.samsung.itshool.memandos.di.modules.NavigationModule
-import ru.samsung.itshool.memandos.di.modules.NetworkModule
-import ru.samsung.itshool.memandos.di.modules.RoomModule
-import ru.samsung.itshool.memandos.ui.fragments.DetailMemFragment
-import ru.samsung.itshool.memandos.ui.fragments.RibbonFragment
-import ru.samsung.itshool.memandos.ui.fragments.TabContainerFragment
+import ru.samsung.itshool.memandos.di.modules.*
+import ru.samsung.itshool.memandos.ui.Activites.LoginActivity
 import ru.samsung.itshool.memandos.ui.VM.*
+import ru.samsung.itshool.memandos.ui.fragments.*
 import javax.inject.Singleton
 
-@Component(modules = [AndroidSchoolAPIModule::class, NetworkModule::class, RoomModule::class, NavigationModule::class])
+@Component(
+    modules = [
+        AndroidSchoolAPIModule::class,
+        NetworkModule::class,
+        RoomModule::class,
+        NavigationModule::class,
+        FactoryModule::class]
+)
 @Singleton
 interface AppComponent {
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance context: Context): AppComponent
     }
-
-    fun inject(loginVM: LoginVM): LoginVM
-    fun inject(robbionVM: RobbionVM): RobbionVM
+    fun inject(loginActivity: LoginActivity) : LoginActivity
+    fun inject(profileFragment: ProfileFragment) : ProfileFragment
+    fun inject(addingMemFragment: AddingMemFragment) : AddingMemFragment
     fun inject(tapeVM: TapeVM): TapeVM
-    fun inject(profileVM: ProfileVM): ProfileVM
     fun inject(addingMemVM: AddingMemVM): AddingMemVM
-    fun inject(ribbonFragment: RibbonFragment) : RibbonFragment
-    fun inject(tabContainerFragment: TabContainerFragment) : TabContainerFragment
-    fun inject(detailMemFragment: DetailMemFragment) : DetailMemFragment
+    fun inject(ribbonFragment: RibbonFragment): RibbonFragment
+    fun inject(tabContainerFragment: TabContainerFragment): TabContainerFragment
+    fun inject(detailMemFragment: DetailMemFragment): DetailMemFragment
 }
